@@ -313,6 +313,36 @@
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
+            // === Фоновая музыка ===
+      var bgMusic = document.getElementById('bg-music');
+      var musicStarted = false;
+
+      if (bgMusic) {
+        bgMusic.volume = 0.25; // ← ГРОМКОСТЬ: 0.0 – 1.0
+
+        function startBgMusic() {
+          if (musicStarted) return;
+          bgMusic.play().then(function () {
+            musicStarted = true;
+            removeStartListeners();
+          }).catch(function () {});
+        }
+
+        function removeStartListeners() {
+          document.removeEventListener('click', startBgMusic);
+          document.removeEventListener('keydown', startBgMusic);
+          document.removeEventListener('scroll', startBgMusic);
+          document.removeEventListener('touchstart', startBgMusic);
+          document.removeEventListener('mousemove', startBgMusic);
+        }
+
+        document.addEventListener('click', startBgMusic);
+        document.addEventListener('keydown', startBgMusic);
+        document.addEventListener('scroll', startBgMusic);
+        document.addEventListener('touchstart', startBgMusic);
+        document.addEventListener('mousemove', startBgMusic);
+      }
+      // === /Фоновая музыка ===
     });
   </script>
 </head>
@@ -430,5 +460,6 @@
       </div>
     </section>
   </main>
+  <audio id="bg-music" src="theme2.mp3" loop preload="auto"></audio>
 </body>
 </html>
