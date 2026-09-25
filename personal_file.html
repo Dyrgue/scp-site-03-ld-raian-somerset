@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0b0b">
+  <meta name="description" content="ЛИЧНОЕ ДЕЛО // РАЙАН СОМЕРСЕТ // «Аркейн» — оперативник ТГ «Ранкор», USAKUK-Site-03">
+  <title>ЛИЧНОЕ ДЕЛО // РАЙАН СОМЕРСЕТ // «АРКЕЙН»</title>
+
+  <style>
+    /* ===== База ===== */
+    :root {
+      --bg: #0a0b0b;
+      --bg-soft: #101212;
+      --line: #232626;
+      --line-strong: #333838;
+      --text: #e7eae8;
+      --muted: #8a908d;
+      --alert: #d98a6a;
+      --ok: #7fbf7f;
+      --no: #d97a7a;
+      --shell: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.6 "Inter", "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      width: 100%;
+      max-width: var(--shell);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      background: var(--text); color: var(--bg);
+      padding: 8px 12px; z-index: 100;
+    }
+    .skip-link:focus { left: 12px; top: 12px; }
+
+    /* ===== Типографика ===== */
+    .eyebrow,
+    .section-code,
+    .transmission-label {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+
+    h1, h2, h3 { font-weight: 600; letter-spacing: -.01em; margin: 0; }
+
+    h1 { font-size: clamp(40px, 7vw, 76px); line-height: .95; }
+    h1 em { font-style: normal; color: var(--muted); }
+
+    h2 { font-size: clamp(24px, 3.4vw, 36px); line-height: 1.15; }
+    h3 { font-size: 16px; }
+
+    p { margin: 0 0 12px; }
+    .lead { color: var(--text); font-size: 17px; }
+    .alert { color: var(--alert); }
+    .ok { color: var(--ok); }
+    .no { color: var(--no); }
+
+    .status-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--alert);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ===== Шапка ===== */
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      background: rgba(10, 11, 11, .85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 10px; height: 10px;
+      background: var(--text);
+      display: inline-block;
+    }
+
+    .site-nav { display: flex; gap: 22px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+    .site-nav a { color: var(--muted); transition: color .15s ease; }
+    .site-nav a:hover, .site-nav a.is-active { color: var(--text); }
+
+    .nav-toggle {
+      display: none;
+      background: none; border: 0; padding: 6px;
+      cursor: pointer;
+    }
+    .nav-toggle span {
+      display: block; width: 20px; height: 1px;
+      background: var(--text); margin: 5px 0;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-image {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .35;
+      filter: grayscale(1) contrast(1.05);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(10,11,11,.55) 0%, rgba(10,11,11,.9) 70%, var(--bg) 100%);
+    }
+
+    .hero-content { position: relative; z-index: 2; padding: 110px 24px 80px; }
+    .hero-lead { max-width: 620px; color: var(--muted); margin-top: 20px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+    .hero-meta {
+      position: relative; z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+    }
+    .hero-meta > div { background: var(--bg); padding: 16px 20px; }
+    .hero-meta span { display: block; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .hero-meta strong { font-weight: 500; font-size: 14px; }
+
+    /* ===== Кнопки ===== */
+    .button {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 18px;
+      border: 1px solid var(--line-strong);
+      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+    .button span { transition: transform .15s ease; }
+    .button:hover span { transform: translateX(3px); }
+
+    .button-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .button-primary:hover { background: #fff; }
+
+    .button-ghost { color: var(--text); }
+    .button-ghost:hover { background: var(--bg-soft); border-color: var(--text); }
+
+    /* ===== Уведомление ===== */
+    .transmission {
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+    .transmission-inner { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; padding: 18px 24px; }
+    .transmission-label { margin: 0; color: var(--alert); }
+    .transmission p { margin: 0; color: var(--muted); font-size: 14px; max-width: 780px; }
+
+    /* ===== Секции ===== */
+    .section { padding: 80px 24px; border-bottom: 1px solid var(--line); }
+    .section-heading { margin-bottom: 32px; }
+    .situation-copy { max-width: 760px; margin-bottom: 32px; }
+    .situation-copy p { color: var(--muted); }
+    .situation-copy p.lead { color: var(--text); }
+
+    /* ===== Хронология ===== */
+    .protocol-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .protocol-list li {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .protocol-list li > span {
+      font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+      padding-top: 3px;
+    }
+    .protocol-list h3 { margin-bottom: 4px; }
+    .protocol-list p { margin: 0; color: var(--muted); font-size: 14px; }
+    .protocol-list a {
+      color: var(--text);
+      border-bottom: 1px solid var(--line-strong);
+      transition: border-color .15s ease, color .15s ease;
+    }
+    .protocol-list a:hover {
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    /* ===== Финальный блок ===== */
+    .final-cta {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+    .final-cta__image {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: .22; filter: grayscale(1);
+    }
+    .final-cta::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(10,11,11,.8), rgba(10,11,11,.95));
+    }
+    .final-cta-inner {
+      position: relative; z-index: 2;
+      padding: 72px 24px;
+      max-width: 820px;
+    }
+    .final-cta__text {
+      margin: 0;
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    /* ===== Адаптив ===== */
+    @media (max-width: 860px) {
+      .hero-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .nav-toggle { display: block; }
+      .site-nav {
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+        display: none;
+      }
+      .site-nav.is-open { display: flex; }
+      .site-nav a { padding: 14px 24px; border-bottom: 1px solid var(--line); }
+
+      .hero-content { padding: 80px 24px 60px; }
+      .protocol-list li { grid-template-columns: 1fr; gap: 6px; }
+    }
+
+    @media (max-width: 520px) {
+      .hero-meta { grid-template-columns: 1fr; }
+      .section { padding: 56px 20px; }
+    }
+  </style>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+      var toggle = document.querySelector('.nav-toggle');
+      var nav = document.getElementById('site-nav');
+
+      if (toggle && nav) {
+        toggle.addEventListener('click', function () {
+          var open = nav.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+
+        nav.addEventListener('click', function (e) {
+          if (e.target.tagName === 'A') {
+            nav.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var id = link.getAttribute('href');
+          if (id.length < 2) return;
+          var target = document.querySelector(id);
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    });
+  </script>
+</head>
+
+<body data-page="dossier">
+  <a class="skip-link" href="#main">К содержанию</a>
+
+  <header class="site-header">
+    <a class="brand" href="#main" aria-label="Личное дело — главная">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>ЛИЧНОЕ ДЕЛО</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span>
+      <span class="sr-only">Открыть меню</span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
+      <a class="is-active" href="#main">Главная</a>
+      <a href="#biography">Биография</a>
+      <a href="#chronicle">Хроника</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <img class="hero-image" src="https://media.discordapp.net/attachments/1308427284625096704/1542663265560297503/image.png?ex=6ab79f5f&is=6ab64ddf&hm=eef6b8338c11a5216ba08dd64af02348af06389596e254ac2a6b85d83a3bec0f&=&format=webp&quality=lossless" alt="" fetchpriority="high">
+      <div class="hero-content shell">
+        <p class="eyebrow"><span class="status-dot"></span> USAKUK-Site-03 // ТГ «Ранкор»</p>
+        <h1>РАЙАН<br><em>СОМЕРСЕТ</em></h1>
+        <p class="hero-lead">Личное дело оперативника «Аркейн». Специалист тактической группы «Ранкор», USAKUK-Site-03. Уровень допуска 3.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#biography">Открыть дело <span>→</span></a>
+          <a class="button button-ghost" href="#chronicle">Хроника службы <span>→</span></a>
+        </div>
+      </div>
+      <div class="hero-meta shell" aria-label="Основные данные">
+        <div><span>Имя</span><strong>Райан Сомерсет (Eng: Ryan Somerset)</strong></div>
+        <div><span>Кодовое имя</span><strong>«Аркейн»</strong></div>
+        <div><span>Подразделение</span><strong>ТГ «Ранкор»</strong></div>
+        <div><span>Допуск</span><strong>Уровень 3</strong></div>
+        <div><span>Идентификационный номер</span><strong>1783-IF-0432</strong></div>
+        <div><span>Должность</span><strong>Специалист тактической группы «Ранкор»</strong></div>
+        <div><span>Дата рождения</span><strong>06.11.2001 г.</strong></div>
+        <div><span>Место работы</span><strong>USAKUK-Site-03</strong></div>
+      </div>
+    </section>
+
+    <!-- СИСТЕМНОЕ УВЕДОМЛЕНИЕ -->
+    <aside class="transmission" aria-label="Системное уведомление">
+      <div class="shell transmission-inner">
+        <span class="transmission-label">⚠ Доступ 4 уровня</span>
+        <p>Доступ к содержанию документации предоставлен исключительно сотрудникам с 4 уровнем допуска и/или по принципу служебной необходимости. Дальнейший просмотр без требуемого допуска карается санкционными мерами, вплоть до увольнения со службы. При случайном доступе — прекратите чтение и доложите руководителю или сотруднику АПАИБ.</p>
+      </div>
+    </aside>
+
+    <!-- БИОГРАФИЯ -->
+    <section class="section shell situation" id="biography">
+      <div class="section-heading">
+        <p class="section-code">01 // Содержание</p>
+        <h2>Биография</h2>
+      </div>
+      <div class="situation-copy">
+        <p class="lead">Райан Сомерсет родился в городе Колумбус, штат Огайо. Его мать работала медсестрой в местном госпитале, а отец был офицером Полицейского Управления Колумбуса (Columbus Police Department). Ещё в детстве, вдохновляясь рассказами отца, Райан решил стать хранителем правопорядка.</p>
+        <p>С детства Райан проявлял физическую активность, усердно занимаясь спортом, чтобы подготовить себя к будущей профессии. Отец часто брал его с собой на стрельбище, где Райан обучался навыкам обращения с оружием, стреляя по мишеням и жестяным банкам. Также они регулярно выбирались на охоту за город — в основном в лесистые районы штата. Эти моменты оставили для Райана важный след в его памяти и сердце.</p>
+        <p>13.09.2016 года в 15:43 в диспетчерскую службы спасения 911 поступил звонок от Райана Сомерсета. Подросток утверждал, что убил своих родителей, в его голосе слышалась дрожь. Диспетчер направил два патрульных наряда. Прибывшие офицеры █████ и █████ вскрыли дверь и проникли внутрь дома. Внутри их встретила ужасающая картина: большая часть комнат была залита кровью, а сам Райан сидел, забившись в угол, и в истерике повторял, что убил их. В 22:11 прибыли агенты Федерального Бюро Расследования в составе четырёх человек, включая одного агента Отдела Необычных Происшествий. Останков тел обнаружено не было — лишь кровавые следы на стенах и потолке. Анализ крови подтвердил, что ДНК принадлежат родителям Райана.</p>
+        <p>Инцидент не получил огласку из-за вмешательства Глобальной Оккультной Коалиции. Расследование установило, что Райан стал жертвой неконтролируемого выброса тауматургии, вызванного отдачей несанкционированного оккультизма, что и привело к трагедии. После оказания необходимой психологической помощи его передали под опеку профессора Джозефа Шейнера IV, преподавателя кампуса Международного центра изучения единой тауматологии (ICSUT) в Нью-Йорке.</p>
+        <p>Спустя ██ месяцев наблюдения и стабилизации психологического состояния Райана, ему организовали досрочное поступление в ICSUT. В стенах академии он начал изучение особых дисциплин, специализируясь на прикладной тауматургии и не только. Профессора отметили его необыкновенный талант, который позволил подростку быстро прогрессировать в освоении магических практик. Во время обучения в кампусе, в рамках договора о сотрудничестве между ICSUT, ГОК и SCP Фондом, агенты Отдела Внешних Связей Фонда проводили работу с перспективными студентами. Райана заинтересовала основная идеология организации: вместо уничтожения аномального (Практика ГОК), Фонд предлагает сокрытие, контроль и поддержание нормальности для защиты общества. Это видение оказалось созвучно его детской мечте стать защитником правопорядка, и он дал согласие на сотрудничество.</p>
+        <p>По окончании обучения Райан получил предложения о работе от нескольких государственных организаций, в число которых входят: «Глобальная Оккультная Коалиция», «PENTAGRAM», «Отдел Необычных Происшествий» и сам «SCP FOUNDATION». Уже заинтересованный в идеологии организации SCP, он поступил на должность профессора в Фонд, получив назначение в Зону 300-14.</p>
+      </div>
+    </section>
+
+    <!-- ХРОНИКА -->
+    <section class="section shell chronicle" id="chronicle">
+      <div class="section-heading">
+        <p class="section-code">02 // Хроника оперативно-служебной деятельности</p>
+        <h2>Хронология</h2>
+      </div>
+      <ol class="protocol-list">
+        <li><span>21.01.2021</span><div><p>Становление на должность профессора по оккультным наукам в организации.</p></div></li>
+        <li><span>15.07.2022</span><div><p>Перевод из Зоны-██ в Зону-300-12, участие в разработках оккультных технологий.</p></div></li>
+        <li><span>03.08.2022</span><div><p>Участие в сдерживании последствий паратехнологий фонда, на территории Антарктиды.</p></div></li>
+        <li><span>09.04.2023</span><div><p>Перевод в МОГ Бета-777 «Копьё Гекаты», прохождение обучения и подготовки.</p></div></li>
+        <li><span>23.12.2023</span><div><p>Участие в сдерживании и подавлении оккультного ритуала в ███████, штат Аляска. <a href="https://test.com" target="_blank" rel="noopener">См.</a></p></div></li>
+        <li><span>09.02.2024</span><div><p>Запрос о переводе в Зону-19 и службе в ней. <span class="no">Отказ.</span></p></div></li>
+        <li><span>13.05.2024</span><div><p>Запрос о переводе в Зону-03 и службе в ней. <span class="ok">Одобрен.</span></p></div></li>
+        <li><span>19.06.2024</span><div><p>Перевод из Зоны-91 в Зону 03. Вступление в состав тактической группы «Ранкор».</p></div></li>
+        <li><span>26.12.2024</span><div><p>Запрос на смену позывного с «Тихоня» на «Аркейн», на имя лейтенанта ГБР «Ранкор». <span class="ok">Одобрен.</span></p></div></li>
+        <li><span>04.02.2026</span><div><p>Прохождение обучения с системами C.A.S.S.I.E. Получение звания специалиста по работе с автономными системами.</p></div></li>
+        <li><span>30.07.2026</span><div><p>Участие в операции по сдерживанию ЧС в Зоне 03 — инцидент S-03-GOI-CI-3.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- ФИНАЛЬНЫЙ БЛОК -->
+    <section class="final-cta">
+      <img class="final-cta__image" src="https://i.pinimg.com/1200x/76/f9/e0/76f9e0312eb44cb99455fb5770f86626.jpg" alt="" loading="lazy">
+      <div class="shell final-cta-inner">
+        <p class="section-code">Личное дело // Аркейн</p>
+        <p class="final-cta__text">Данное Личное Дело писалось автором (@dyrgue). Если вы заметили несостыковки или же ошибки, неважно где, будто в оформлении или в лоре то пишите мне. Мне хотелось бы собрать фидбэк об этом. Ведь я впервые пишу ЛД для своего персонажа.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
