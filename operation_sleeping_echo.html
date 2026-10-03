@@ -3,402 +3,541 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0b0b">
+  <meta name="theme-color" content="#050505">
   <meta name="description" content="ОПЕРАЦИЯ «СПЯЩЕЕ ЭХО» // МОГ Бета-777 «Копьё Гекаты» // Западная Сибирь, 2025">
   <meta name="robots" content="noindex, nofollow">
   <title>ОПЕРАЦИЯ // СПЯЩЕЕ ЭХО</title>
 
-  <!-- Open Graph для превью -->
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="ОПЕРАЦИЯ // СПЯЩЕЕ ЭХО">
-  <meta property="og:description" content="МОГ Бета-777 «Копьё Гекаты». Западная Сибирь, 2025. Ритуал подавлен.">
-  <meta property="og:image" content="echo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== База ===== */
+    /* =========================================================
+       ПЕРЕМЕННЫЕ
+       ========================================================= */
     :root {
-      --bg: #0a0b0b;
-      --bg-soft: #101212;
-      --line: #232626;
-      --line-strong: #333838;
-      --text: #e7eae8;
-      --muted: #8a908d;
-      --alert: #d98a6a;
+      --bg: #050505;
+      --bg-soft: #0a0a0a;
+      --bg-panel: #0e0e0e;
+      --bg-panel-hi: #141414;
+
+      --ink: #f2f2f2;
+      --ink-mid: #a8a8a8;
+      --ink-dim: #6a6a6a;
+      --ink-faint: #3a3a3a;
+
+      --line: #1c1c1c;
+      --line-mid: #2a2a2a;
+      --line-strong: #4a4a4a;
+
+      --accent: #ffffff;
+      --alert: #d94a3d;
       --ok: #7fbf7f;
-      --no: #d97a7a;
-      --shell: 1100px;
-      --mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --shell: 1280px;
+      --sans: "Inter", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     html, body { margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
-      color: var(--text);
-      font: 16px/1.6 "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      font: 15px/1.6 var(--sans);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
       position: relative;
+      min-height: 100vh;
     }
 
-    /* ===== Сканлайны ===== */
-    body::before {
-      content: "";
+    /* =========================================================
+       ФОН — ЛЕС / КУЛЬТ
+       ========================================================= */
+    .bg-layer {
       position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: repeating-linear-gradient(
-        180deg,
-        rgba(255,255,255,.012) 0px,
-        rgba(255,255,255,.012) 1px,
-        transparent 1px,
-        transparent 3px
-      );
-      mix-blend-mode: overlay;
+      pointer-events: none; z-index: 0;
+      overflow: hidden;
     }
 
-    /* ===== Виньетка ===== */
-    body::after {
+    /* 1. Точечная мелкая матрица «мох/хвоя» */
+    .bg-layer::before {
       content: "";
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(
-        ellipse at center,
-        transparent 55%,
-        rgba(0,0,0,.55) 100%
-      );
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: .55;
+      mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
     }
 
+    /* 2. Редкая крупная сетка */
+    .bg-layer::after {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 100px 100px;
+      mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
+    }
+
+    /* 3. ХВОЯ — плотная диагональная штриховка */
+    .bg-pine {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -18deg,
+        rgba(255,255,255,.022) 0 1px,
+        transparent 1px 14px
+      );
+      opacity: .75;
+      mask-image: radial-gradient(ellipse at 40% 60%, #000 25%, transparent 85%);
+      -webkit-mask-image: radial-gradient(ellipse at 40% 60%, #000 25%, transparent 85%);
+    }
+
+    /* 4. СТВОЛЫ — частые вертикальные пунктирные рельсы */
+    .bg-trunks { position: absolute; inset: 0; }
+    .bg-trunks span {
+      position: absolute; top: 0; bottom: 0;
+      width: 1px;
+      background-image: linear-gradient(var(--line-mid) 50%, transparent 50%);
+      background-size: 1px 22px;
+      opacity: .55;
+    }
+    /* Верхние — «высокие стволы» */
+    .bg-trunks span:nth-child(1) { left: 4%; }
+    .bg-trunks span:nth-child(2) { left: 11%; opacity: .35; }
+    .bg-trunks span:nth-child(3) { left: 22%; }
+    .bg-trunks span:nth-child(4) { left: 33%; opacity: .3; }
+    .bg-trunks span:nth-child(5) { left: 50%; opacity: .2; }
+    .bg-trunks span:nth-child(6) { left: 67%; }
+    .bg-trunks span:nth-child(7) { left: 78%; opacity: .35; }
+    .bg-trunks span:nth-child(8) { left: 89%; }
+    .bg-trunks span:nth-child(9) { left: 96%; opacity: .4; }
+
+    /* 5. ЛУНЫ — тусклые светящиеся пятна */
+    .bg-moons { position: absolute; inset: 0; }
+    .bg-moons .moon {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.045) 0%, transparent 70%);
+    }
+    .bg-moons .moon.m1 { top: 8%; left: 5%; width: 160px; height: 160px; }
+    .bg-moons .moon.m2 { top: 55%; right: 8%; width: 220px; height: 220px; }
+    .bg-moons .moon.m3 { bottom: 6%; left: 12%; width: 120px; height: 120px; }
+
+    /* 6. ЗНАКИ КУЛЬТА — редкие кресты по краям */
+    .bg-crosses { position: absolute; inset: 0; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+    .bg-crosses span { position: absolute; opacity: .5; }
+    .bg-crosses span::before { content: "+"; }
+    .bg-crosses span:nth-child(1) { top: 14%; left: 8%; }
+    .bg-crosses span:nth-child(2) { top: 40%; right: 6%; }
+    .bg-crosses span:nth-child(3) { bottom: 24%; left: 14%; }
+    .bg-crosses span:nth-child(4) { bottom: 8%; right: 12%; }
+    .bg-crosses span:nth-child(5) { top: 64%; left: 3%; }
+    .bg-crosses span:nth-child(6) { top: 26%; right: 2%; }
+
+    /* 7. ЛИНИИ ПОЧВЫ — горизонтальные срезы */
+    .bg-horizontals { position: absolute; inset: 0; }
+    .bg-horizontals span {
+      position: absolute; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line-mid) 15%, var(--line-mid) 85%, transparent);
+      opacity: .45;
+    }
+    .bg-horizontals span:nth-child(1) { top: 22%; }
+    .bg-horizontals span:nth-child(2) { top: 48%; }
+    .bg-horizontals span:nth-child(3) { top: 74%; }
+
+    /* 8. КУЛЬТОВЫЕ МАНДАЛЫ — слабые радиальные контуры в углах */
+    .bg-mandala {
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 50%;
+    }
+    .bg-mandala.mA { top: 12%; right: 4%; width: 200px; height: 200px; }
+    .bg-mandala.mA::before {
+      content: "";
+      position: absolute; inset: 20px;
+      border: 1px dashed rgba(255,255,255,.06);
+      border-radius: 50%;
+    }
+    .bg-mandala.mA::after {
+      content: "";
+      position: absolute; inset: 48px;
+      border: 1px solid rgba(255,255,255,.04);
+      border-radius: 50%;
+    }
+    .bg-mandala.mB { bottom: 10%; left: 6%; width: 140px; height: 140px; }
+    .bg-mandala.mB::before {
+      content: "";
+      position: absolute; inset: 16px;
+      border: 1px dashed rgba(255,255,255,.06);
+      border-radius: 50%;
+    }
+
+    /* 9. ТОНКИЕ ЛУЧИ — редкие наклонные линии */
+    .bg-rays { position: absolute; inset: 0; opacity: .3; }
+    .bg-rays span {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+      transform-origin: left center;
+    }
+    .bg-rays span:nth-child(1) { top: 30%; left: 0; width: 26%; transform: rotate(12deg); }
+    .bg-rays span:nth-child(2) { top: 68%; right: 0; width: 22%; transform: rotate(-15deg); transform-origin: right center; }
+    .bg-rays span:nth-child(3) { top: 86%; left: 40%; width: 20%; transform: rotate(8deg); }
+
+    /* =========================================================
+       КОНТЕНТ
+       ========================================================= */
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
 
-    ::selection { background: var(--alert); color: var(--bg); }
-
-    :focus-visible {
-      outline: 1px solid var(--alert);
-      outline-offset: 3px;
-    }
+    ::selection { background: var(--ink); color: var(--bg); }
+    :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 
     .shell {
-      width: 100%;
-      max-width: var(--shell);
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 2;
+      width: 100%; max-width: var(--shell);
+      margin: 0 auto; padding: 0 48px;
+      position: relative; z-index: 2;
     }
 
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-    }
-
-    .skip-link {
-      position: absolute; left: -9999px; top: 0;
-      background: var(--text); color: var(--bg);
-      padding: 8px 12px; z-index: 100;
-    }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--bg); padding: 8px 14px; z-index: 200; font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
     .skip-link:focus { left: 12px; top: 12px; }
 
-    /* ===== Типографика ===== */
-    .eyebrow,
-    .section-code,
-    .transmission-label {
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 12px;
-      font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
+    /* =========================================================
+       ТИПОГРАФИКА
+       ========================================================= */
+    .eyebrow, .section-code, .transmission-label { font-family: var(--mono); }
+
+    .eyebrow, .section-code, .transmission-label {
+      font-size: 10px; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--ink-dim); margin: 0 0 16px; font-weight: 500;
     }
 
-    h1, h2, h3 { font-weight: 600; letter-spacing: -.01em; margin: 0; }
+    h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -.02em; }
+    h1 { font-size: clamp(48px, 8vw, 128px); line-height: .9; text-transform: uppercase; font-weight: 600; }
+    h1 em { font-style: normal; color: var(--ink-dim); font-weight: 300; }
+    h2 { font-size: clamp(32px, 4.5vw, 64px); line-height: .95; text-transform: uppercase; font-weight: 500; }
+    h3 { font-size: 18px; text-transform: uppercase; letter-spacing: .05em; font-weight: 500; }
 
-    h1 { font-size: clamp(40px, 7vw, 76px); line-height: .95; }
-    h1 em { font-style: normal; color: var(--muted); }
+    p { margin: 0 0 14px; }
 
-    h2 { font-size: clamp(24px, 3.4vw, 36px); line-height: 1.15; }
-    h3 { font-size: 16px; }
-
-    p { margin: 0 0 12px; }
-    .lead { color: var(--text); font-size: 17px; }
-    .alert { color: var(--alert); }
-    .ok { color: var(--ok); }
-    .no { color: var(--no); }
-
-    /* ===== Глитч на H1 ===== */
-    @keyframes glitch {
-      0%, 100% { transform: translate(0); text-shadow: none; }
-      20% { transform: translate(-2px, 1px); text-shadow: 2px 0 var(--alert), -2px 0 #6ea8d9; }
-      40% { transform: translate(2px, -1px); text-shadow: -2px 0 var(--alert), 2px 0 #6ea8d9; }
-      60% { transform: translate(-1px, 0); }
-      80% { transform: translate(1px, 0); }
-    }
-    .hero h1 { animation: glitch 900ms ease-out 1; }
-
-    /* ===== Пульс статус-точки ===== */
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(217,138,106,.6); }
-      50%      { box-shadow: 0 0 0 6px rgba(217,138,106,0); }
-    }
-    .status-dot {
-      display: inline-block;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--alert);
-      margin-right: 8px;
-      vertical-align: middle;
-      animation: pulse 2.2s ease-in-out infinite;
-    }
-
-    /* ===== Черные плашки (изъято) ===== */
     .redacted {
-      background: #1a1c1c;
-      color: transparent;
-      padding: 0 2px;
-      border-radius: 1px;
-      user-select: none;
-      box-shadow: inset 0 0 0 1px var(--line-strong);
+      background: var(--ink-faint); color: transparent;
+      padding: 0 4px; user-select: none; position: relative;
+    }
+    .redacted::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.4) 4px 5px);
     }
 
-    /* ===== Термины с тултипом ===== */
-    .term {
-      border-bottom: 1px dashed var(--line-strong);
-      cursor: help;
-      transition: color .15s ease, border-color .15s ease;
-    }
-    .term:hover { color: var(--alert); border-color: var(--alert); }
+    .term { border-bottom: 1px dashed var(--line-strong); cursor: help; transition: color .15s, border-color .15s; }
+    .term:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* ===== Шапка ===== */
+    /* =========================================================
+       ШАПКА
+       ========================================================= */
     .site-header {
-      position: sticky; top: 0; z-index: 20;
+      position: sticky; top: 0; z-index: 40;
       display: flex; align-items: center; justify-content: space-between;
-      gap: 16px;
-      padding: 14px 24px;
-      background: rgba(10, 11, 11, .85);
-      backdrop-filter: blur(8px);
+      gap: 24px; padding: 14px 48px;
+      background: rgba(5,5,5,.72);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--line);
-    }
-
-    .brand {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
       font-family: var(--mono);
     }
-
-    .brand-mark {
-      width: 10px; height: 10px;
-      background: var(--text);
-      display: inline-block;
+    .brand {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: .3em; text-transform: uppercase; font-weight: 500;
     }
-
-    .site-nav { display: flex; gap: 22px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
-    .site-nav a { color: var(--muted); transition: color .15s ease; }
-    .site-nav a:hover, .site-nav a.is-active { color: var(--text); }
-
-    .nav-toggle {
-      display: none;
-      background: none; border: 0; padding: 6px;
-      cursor: pointer;
+    .brand-mark { width: 10px; height: 10px; background: var(--ink); position: relative; display: inline-block; }
+    .brand-mark::after { content: ""; position: absolute; inset: 3px; background: var(--bg); }
+    .brand-meta {
+      font-size: 10px; color: var(--ink-faint);
+      letter-spacing: .2em; padding-left: 16px;
+      border-left: 1px solid var(--line-mid); display: none;
     }
-    .nav-toggle span {
-      display: block; width: 20px; height: 1px;
-      background: var(--text); margin: 5px 0;
-    }
+    @media (min-width: 900px) { .brand-meta { display: inline-block; } }
 
-    /* ===== Полоса прогресса чтения ===== */
-    .read-progress {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 2px; background: transparent; z-index: 50;
-      pointer-events: none;
+    .site-nav { display: flex; gap: 30px; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; }
+    .site-nav a { color: var(--ink-dim); transition: color .2s; position: relative; padding: 4px 0; }
+    .site-nav a::before {
+      content: ""; position: absolute; left: -12px; top: 50%;
+      width: 6px; height: 1px; background: var(--accent);
+      opacity: 0; transition: opacity .2s;
     }
+    .site-nav a:hover { color: var(--ink); }
+    .site-nav a:hover::before, .site-nav a.is-active::before { opacity: 1; }
+    .site-nav a.is-active { color: var(--ink); }
+
+    .nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
+    .nav-toggle span { display: block; width: 24px; height: 1.5px; background: var(--ink); margin: 6px 0; }
+
+    .read-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: transparent; z-index: 60; pointer-events: none; }
     .read-progress span {
       display: block; height: 100%; width: 0;
-      background: var(--alert);
+      background: var(--accent);
       transition: width .08s linear;
+      box-shadow: 0 0 12px rgba(255,255,255,.5);
     }
 
-    /* ===== Кнопка наверх ===== */
     .to-top {
-      position: fixed; right: 24px; bottom: 24px;
-      width: 40px; height: 40px;
-      background: var(--bg-soft);
-      color: var(--text);
-      border: 1px solid var(--line-strong);
+      position: fixed; right: 28px; bottom: 28px;
+      width: 46px; height: 46px;
+      background: var(--bg-panel); color: var(--ink);
+      border: 1px solid var(--line-mid);
       cursor: pointer; z-index: 30;
       opacity: 0; visibility: hidden;
-      transition: opacity .2s ease, visibility .2s ease, background .15s ease, color .15s ease;
-      font-size: 16px;
+      transition: opacity .2s, visibility .2s, background .2s, color .2s;
+      font-family: var(--mono); font-size: 14px;
       display: flex; align-items: center; justify-content: center;
     }
     .to-top.is-visible { opacity: 1; visibility: visible; }
-    .to-top:hover { background: var(--text); color: var(--bg); }
+    .to-top:hover { background: var(--ink); color: var(--bg); }
 
-    /* ===== Hero ===== */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--line);
-    }
-
+    /* =========================================================
+       HERO
+       ========================================================= */
+    .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line-mid); }
     .hero-image {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: .35;
-      filter: grayscale(1) contrast(1.05);
-      background: var(--bg);
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: .16;
+      filter: grayscale(1) contrast(1.15);
     }
-
-    .hero::after {
-      content: "";
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,11,11,.55) 0%, rgba(10,11,11,.9) 70%, var(--bg) 100%);
+    .hero::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(5,5,5,.5) 0%, rgba(5,5,5,.95) 80%, #050505 100%);
       z-index: 1;
     }
 
-    .hero-content { position: relative; z-index: 2; padding: 110px 24px 80px; }
-    .hero-lead { max-width: 660px; color: var(--muted); margin-top: 20px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .hero-topbar {
+      position: relative; z-index: 3;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; padding: 28px 48px 20px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+    .hero-topbar .status-line { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
+    .hero-topbar .status-line .dot {
+      width: 6px; height: 6px; background: var(--alert);
+      border-radius: 50%; box-shadow: 0 0 8px var(--alert);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+    .hero-content {
+      position: relative; z-index: 3;
+      padding: 96px 48px 100px;
+    }
+    .hero-lead {
+      max-width: 720px; margin: 36px 0 0;
+      color: var(--ink-mid); font-size: 17px;
+      font-weight: 300; line-height: 1.65;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 44px; }
 
     .hero-meta {
-      position: relative; z-index: 2;
+      position: relative; z-index: 3;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border-top: 1px solid var(--line);
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line-mid);
+      border-bottom: 1px solid var(--line-mid);
+      background: rgba(5,5,5,.4);
+      backdrop-filter: blur(4px);
     }
-    .hero-meta > div { background: var(--bg); padding: 16px 20px; }
+    .hero-meta > div {
+      padding: 22px 24px;
+      border-right: 1px solid var(--line);
+      position: relative;
+    }
+    .hero-meta > div:last-child { border-right: 0; }
+    .hero-meta > div::before {
+      content: attr(data-idx);
+      position: absolute; top: 8px; right: 10px;
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: .2em; color: var(--ink-faint);
+    }
     .hero-meta span {
-      display: block; font-size: 11px; letter-spacing: .16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-      font-family: var(--mono);
+      display: block; font-family: var(--mono);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--ink-faint);
+      margin-bottom: 8px;
     }
     .hero-meta strong {
-      font-weight: 500; font-size: 14px;
-      font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
+      display: block; font-family: var(--mono);
+      font-weight: 400; font-size: 13px;
+      color: var(--ink); line-height: 1.4;
+      letter-spacing: .02em;
     }
+    .hero-meta strong.ok { color: var(--ok); }
 
-    /* ===== Кнопки ===== */
+    /* =========================================================
+       КНОПКИ
+       ========================================================= */
     .button {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 12px 18px;
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 14px 22px;
       border: 1px solid var(--line-strong);
-      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-      transition: background .15s ease, color .15s ease, border-color .15s ease;
-      font-family: var(--mono);
-      cursor: pointer;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .22em; text-transform: uppercase;
+      transition: all .2s; cursor: pointer;
+      background: transparent; color: var(--ink);
+      position: relative;
     }
-    .button span { transition: transform .15s ease; }
-    .button:hover span { transform: translateX(3px); }
+    .button::before {
+      content: ""; position: absolute;
+      left: -1px; top: -1px; width: 6px; height: 6px;
+      border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
+      opacity: 0; transition: opacity .2s;
+    }
+    .button::after {
+      content: ""; position: absolute;
+      right: -1px; bottom: -1px; width: 6px; height: 6px;
+      border-bottom: 1px solid var(--ink); border-right: 1px solid var(--ink);
+      opacity: 0; transition: opacity .2s;
+    }
+    .button:hover::before, .button:hover::after { opacity: 1; }
+    .button span { transition: transform .2s; }
+    .button:hover span { transform: translateX(4px); }
+    .button-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .button-primary:hover { background: var(--bg); color: var(--ink); }
+    .button-ghost:hover { background: var(--ink); color: var(--bg); }
 
-    .button-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .button-primary:hover { background: #fff; }
-
-    .button-ghost { color: var(--text); }
-    .button-ghost:hover { background: var(--bg-soft); border-color: var(--text); }
-
-    /* ===== Уведомление ===== */
+    /* =========================================================
+       УВЕДОМЛЕНИЕ
+       ========================================================= */
     .transmission {
-      border-bottom: 1px solid var(--line);
-      background: var(--bg-soft);
-      position: relative;
-      z-index: 2;
+      border-bottom: 1px solid var(--line-mid);
+      background: var(--bg-soft); position: relative; z-index: 2;
     }
-    .transmission-inner { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; padding: 18px 24px; }
-    .transmission-label { margin: 0; color: var(--alert); }
-    .transmission p { margin: 0; color: var(--muted); font-size: 14px; max-width: 780px; }
-
-    /* ===== Секции ===== */
-    .section {
-      padding: 80px 24px;
-      border-bottom: 1px solid var(--line);
-      position: relative;
+    .transmission::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background-image: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 12px);
     }
-
-    /* Угловые метки */
-    .section::before,
-    .section::after {
-      content: "";
-      position: absolute;
-      width: 12px; height: 12px;
-      border: 1px solid var(--line-strong);
-      pointer-events: none;
+    .transmission-inner {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 32px; align-items: baseline;
+      padding: 26px 48px; font-family: var(--mono);
     }
-    .section::before { top: 24px; left: 24px; border-right: 0; border-bottom: 0; }
-    .section::after  { bottom: 24px; right: 24px; border-left: 0; border-top: 0; }
+    .transmission-label {
+      margin: 0; color: var(--alert); font-weight: 600;
+      white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .transmission-label::before { content: "▲"; font-size: 10px; }
+    .transmission p {
+      margin: 0; color: var(--ink-mid); font-size: 12px;
+      letter-spacing: .05em; max-width: 820px;
+      line-height: 1.7; font-family: var(--sans);
+    }
+    .transmission .transmission-code { color: var(--ink-faint); font-size: 10px; letter-spacing: .25em; }
 
-    .section-heading { margin-bottom: 32px; }
-    .situation-copy { max-width: 820px; margin-bottom: 32px; }
-    .situation-copy p { color: var(--muted); }
-    .situation-copy p.lead { color: var(--text); }
-    .situation-copy strong { color: var(--text); }
+    /* =========================================================
+       СЕКЦИИ
+       ========================================================= */
+    .section { padding: 96px 0; border-bottom: 1px solid var(--line); position: relative; }
 
-    /* ===== Раскладка «текст + фото церкви» ===== */
-    .story-layout {
+    .section-heading {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 48px;
-      align-items: start;
+      grid-template-columns: 200px 1fr 260px;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 64px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line-mid);
+      position: relative;
     }
-    .story-layout .situation-copy { max-width: none; margin-bottom: 0; }
+    .section-heading .section-code {
+      margin: 0; color: var(--ink-dim);
+      padding-top: 8px; position: relative;
+    }
+    .section-heading .section-code::before {
+      content: ""; position: absolute;
+      top: 0; left: 0; width: 16px; height: 1px;
+      background: var(--accent);
+    }
 
-    /* ===== Сайдбар «карточка объекта» ===== */
-    .site-aside {
-      position: sticky;
-      top: 90px;
+    .section-tech {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border-left: 1px solid var(--line);
+      padding: 4px 0 4px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 6px;
+      align-self: end;
     }
+    .section-tech .row { display: flex; justify-content: space-between; gap: 12px; }
+    .section-tech .k { color: var(--ink-faint); }
+    .section-tech .v { color: var(--ink); }
 
+    /* =========================================================
+       СЮЖЕТ (текст + фото справа)
+       ========================================================= */
+    .story-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 60px;
+      align-items: start;
+    }
+    .situation-copy { max-width: 820px; }
+    .situation-copy p { color: var(--ink-mid); font-size: 15px; line-height: 1.8; }
+    .situation-copy p.lead {
+      color: var(--ink); font-size: 17px; font-weight: 300; line-height: 1.7;
+      padding-left: 20px; border-left: 1px solid var(--line-strong);
+      margin-bottom: 24px;
+    }
+    .situation-copy strong { color: var(--ink); }
+
+    /* =========================================================
+       САЙДБАР (объект)
+       ========================================================= */
+    .site-aside {
+      position: sticky; top: 100px;
+      display: flex; flex-direction: column; gap: 24px;
+      font-family: var(--mono);
+    }
     .site-card {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
+      border: 1px solid var(--line-mid);
+      background: rgba(14,14,14,.75);
+      backdrop-filter: blur(6px);
       padding: 18px;
       position: relative;
     }
-    .site-card::before {
-      content: "";
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 14px; height: 14px;
-      border-top: 1px solid var(--alert);
-      border-left: 1px solid var(--alert);
+    .site-card::before, .site-card::after {
+      content: ""; position: absolute;
+      width: 8px; height: 8px;
+      border-color: var(--accent); border-style: solid;
+      pointer-events: none; opacity: .8;
     }
-    .site-card::after {
-      content: "";
-      position: absolute;
-      bottom: -1px; right: -1px;
-      width: 14px; height: 14px;
-      border-bottom: 1px solid var(--alert);
-      border-right: 1px solid var(--alert);
-    }
-
+    .site-card::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .site-card::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
     .site-card__title {
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--ink-dim);
       margin: 0 0 14px;
       display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 12px; border-bottom: 1px solid var(--line);
     }
+    .site-card__title span:last-child { color: var(--accent); }
 
-    /* ===== Фото церкви (с hover-эффектом) ===== */
     .site-photo {
-      border: 1px solid var(--line);
-      background: var(--bg);
+      border: 1px solid var(--line-mid);
+      background: var(--bg-soft);
       overflow: hidden;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 4/3;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -406,218 +545,355 @@
       position: relative;
     }
     .site-photo__img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       filter: grayscale(1) contrast(1.05);
-      transition: transform .5s cubic-bezier(.2,.7,.3,1), filter .3s ease;
+      transition: transform .6s cubic-bezier(.2,.7,.3,1), filter .3s ease;
       transform-origin: center;
-      will-change: transform;
     }
-    /* Увеличение + наклон на ~6° */
     .site-photo:hover .site-photo__img,
     .site-photo:focus-within .site-photo__img {
       transform: scale(1.08) rotate(6deg);
       filter: grayscale(1) contrast(1.1);
     }
-
     .site-photo__caption {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: .12em;
-      color: var(--muted);
+      color: var(--ink-dim);
       text-align: center;
       margin: 0 0 14px;
       line-height: 1.5;
     }
 
-    /* Строки данных */
     .site-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--line);
-      font-size: 13px;
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 9px 0; border-bottom: 1px dashed var(--line);
+      font-size: 11px;
     }
     .site-row:last-child { border-bottom: 0; }
     .site-row dt {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
+      color: var(--ink-faint); font-family: var(--mono);
+      font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
     }
     .site-row dd {
-      margin: 0;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--text);
-      text-align: right;
+      margin: 0; font-family: var(--mono);
+      font-size: 11px; color: var(--ink);
+      text-align: right; letter-spacing: .03em;
     }
+    .site-row dd.ok { color: var(--ok); }
 
-    /* ===== Сетка данных ===== */
-    .data-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-      margin: 0;
+    /* =========================================================
+       ЭТАПЫ ОПЕРАЦИИ — как «журнал» (совместимо с хроникой досье)
+       ========================================================= */
+    .protocol-list {
+      list-style: none;
+      margin: 0; padding: 0;
+      border-top: 1px solid var(--line-mid);
+      counter-reset: stage;
     }
-    .data-grid > div { background: var(--bg); padding: 18px 20px; }
-    .data-grid dt {
-      font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 6px;
-      font-family: var(--mono);
-    }
-    .data-grid dd {
-      margin: 0; font-size: 15px;
-      font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
-    }
-
-    .data-grid--wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-    /* ===== Этапы операции ===== */
-    .protocol-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
     .protocol-list li {
       display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 24px;
-      padding: 24px 0 24px 44px;
+      grid-template-columns: 220px 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 32px 0;
       border-bottom: 1px solid var(--line);
       position: relative;
+      counter-increment: stage;
     }
     .protocol-list li::before {
-      content: attr(data-index);
+      content: counter(stage, decimal-leading-zero);
       position: absolute;
-      left: 0; top: 26px;
-      font: 11px/1 var(--mono);
-      color: var(--line-strong);
-      letter-spacing: .18em;
-    }
-    .protocol-list li > span {
-      font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
-      padding-top: 3px;
+      left: -20px; top: 34px;
       font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
+      font-size: 11px;
+      letter-spacing: .18em;
+      color: var(--ink-faint);
     }
-    .protocol-list h3 { margin-bottom: 8px; }
-    .protocol-list p { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
-    .protocol-list p:last-child { margin-bottom: 0; }
+    .protocol-list .stage__left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      padding-left: 26px;
+    }
+    .protocol-list .stage__left::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 12px;
+      width: 16px; height: 1px;
+      background: var(--accent);
+    }
+    .protocol-list .stage__num {
+      font-family: var(--mono);
+      font-size: 40px;
+      line-height: 1;
+      color: var(--ink-faint);
+      letter-spacing: .04em;
+      font-weight: 300;
+    }
+    .protocol-list .stage__label {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      padding: 4px 10px;
+      border: 1px solid var(--line-strong);
+      align-self: flex-start;
+    }
 
-    /* ===== Финальный блок ===== */
+    .protocol-list .stage__body { min-width: 0; }
+    .protocol-list .stage__body h3 {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -.005em;
+      color: var(--ink);
+      text-transform: none;
+      margin: 0 0 12px;
+    }
+    .protocol-list .stage__body p {
+      color: var(--ink-mid);
+      font-size: 14px;
+      line-height: 1.75;
+      margin: 0 0 10px;
+    }
+    .protocol-list .stage__body p:last-child { margin-bottom: 0; }
+
+    /* =========================================================
+       РЕЗУЛЬТАТЫ — 4 плитки
+       ========================================================= */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line-mid);
+      border: 1px solid var(--line-mid);
+      margin-bottom: 40px;
+    }
+    .facts-grid > div {
+      background: var(--bg);
+      padding: 24px;
+      position: relative;
+    }
+    .facts-grid > div::before {
+      content: attr(data-idx);
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: .2em; color: var(--ink-faint);
+    }
+    .facts-grid dt {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--ink-faint);
+      margin: 0 0 10px;
+    }
+    .facts-grid dd {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .facts-grid dd.ok { color: var(--ok); }
+    .facts-grid dd.alert { color: var(--alert); }
+
+    .facts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--line-mid);
+      counter-reset: fact;
+    }
+    .facts-list p {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 24px;
+      padding: 18px 0;
+      margin: 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-mid);
+      font-size: 14px;
+      line-height: 1.75;
+      counter-increment: fact;
+      align-items: baseline;
+    }
+    .facts-list p::before {
+      content: "F-" counter(fact, decimal-leading-zero);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .2em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       ФИНАЛ
+       ========================================================= */
     .final-cta {
       position: relative;
+      background: rgba(10,10,10,.6);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid var(--line-mid);
       overflow: hidden;
-      border-bottom: 1px solid var(--line);
     }
     .final-cta__image {
       position: absolute; inset: 0;
-      width: 100%; height: 100%; object-fit: cover;
-      opacity: .22; filter: grayscale(1);
-      background: var(--bg);
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: .1;
+      filter: grayscale(1);
     }
     .final-cta::after {
       content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,11,11,.8), rgba(10,11,11,.95));
+      background: linear-gradient(180deg, rgba(5,5,5,.85), rgba(5,5,5,.95));
       z-index: 1;
+    }
+    .final-cta::before {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+      height: 4px;
+      background-image: repeating-linear-gradient(90deg, var(--ink-faint) 0 8px, transparent 8px 14px);
+      z-index: 3;
     }
     .final-cta-inner {
       position: relative; z-index: 2;
-      padding: 72px 24px;
-      max-width: 820px;
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
     }
+    .final-cta__side {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--ink-faint); line-height: 2;
+      border-right: 1px solid var(--line);
+      padding-right: 24px;
+    }
+    .final-cta__side div { padding: 4px 0; }
+    .final-cta__side .k { color: var(--ink-dim); }
+    .final-cta__side .v { color: var(--ink); }
     .final-cta__text {
-      margin: 0 0 12px;
-      color: var(--text);
-      font-size: 17px;
-      line-height: 1.7;
+      margin: 0 0 14px;
+      color: var(--ink-mid); font-size: 15px;
+      line-height: 1.75; font-weight: 300;
+    }
+    .final-cta__text:first-child {
+      color: var(--ink); font-size: 20px;
+      font-weight: 400; margin-bottom: 24px;
+      letter-spacing: -.01em;
     }
 
-    /* ===== Адаптив ===== */
+    /* =========================================================
+       АДАПТИВ
+       ========================================================= */
+    @media (max-width: 1100px) {
+      .shell { padding: 0 32px; }
+      .site-header { padding: 14px 32px; }
+      .hero-content { padding: 72px 32px 80px; }
+      .hero-topbar { padding: 24px 32px 16px; }
+      .story-layout { grid-template-columns: 1fr; gap: 48px; }
+      .site-aside { position: static; flex-direction: row; flex-wrap: wrap; }
+      .site-card { flex: 1 1 260px; }
+      .section-heading { grid-template-columns: 180px 1fr 220px; gap: 32px; }
+      .facts-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 960px) {
-      .story-layout {
-        grid-template-columns: 1fr;
-        gap: 32px;
+      .hero-meta { grid-template-columns: repeat(2, 1fr); }
+      .hero-meta > div:nth-child(2n) { border-right: 0; }
+      .hero-meta > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+
+      .section-heading { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .section-tech { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 12px; }
+
+      .protocol-list li {
+        grid-template-columns: 160px 1fr;
+        gap: 24px;
       }
-      .site-aside {
-        position: static;
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-      .site-card { flex: 1 1 280px; }
+      .protocol-list .stage__num { font-size: 32px; }
     }
 
-    @media (max-width: 860px) {
-      .hero-meta, .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .data-grid--wide { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 720px) {
+    @media (max-width: 760px) {
+      .shell { padding: 0 20px; }
+      .site-header { padding: 12px 20px; }
       .nav-toggle { display: block; }
       .site-nav {
         position: absolute; top: 100%; left: 0; right: 0;
         flex-direction: column; gap: 0;
-        background: var(--bg);
-        border-bottom: 1px solid var(--line);
+        background: var(--bg); border-bottom: 1px solid var(--line-mid);
         display: none;
       }
       .site-nav.is-open { display: flex; }
-      .site-nav a { padding: 14px 24px; border-bottom: 1px solid var(--line); }
+      .site-nav a { padding: 16px 24px; border-bottom: 1px solid var(--line); font-size: 11px; }
+      .site-nav a::before { display: none; }
 
-      .hero-content { padding: 80px 24px 60px; }
-      .protocol-list li { grid-template-columns: 1fr; gap: 6px; padding-left: 32px; }
-      .protocol-list li::before { top: 4px; }
+      .hero-topbar { padding: 20px 20px 12px; font-size: 9px; }
+      .hero-content { padding: 48px 20px 56px; }
+      .hero-lead { font-size: 15px; }
+      .hero-meta { grid-template-columns: 1fr; }
+      .hero-meta > div { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px 20px; }
+      .hero-meta > div:last-child { border-bottom: 0; }
 
-      .section::before, .section::after { display: none; }
+      .transmission-inner { grid-template-columns: 1fr; gap: 10px; padding: 22px 20px; }
 
-      /* На тач-устройствах hover-наклон может срабатывать нежелательно —
-         оставляем, но уменьшаем амплитуду */
-      .site-photo:hover .site-photo__img {
-        transform: scale(1.05) rotate(3deg);
-      }
+      .section { padding: 64px 0; }
+      .section-heading { margin-bottom: 40px; padding-bottom: 20px; }
+
+      .protocol-list li { grid-template-columns: 1fr; gap: 12px; padding: 22px 0 22px 20px; }
+      .protocol-list li::before { left: 0; top: 24px; }
+      .protocol-list .stage__left { flex-direction: row; align-items: baseline; gap: 16px; padding-left: 20px; }
+      .protocol-list .stage__left::before { width: 12px; }
+      .protocol-list .stage__num { font-size: 28px; }
+
+      .facts-grid { grid-template-columns: 1fr; }
+
+      .final-cta-inner { grid-template-columns: 1fr; gap: 24px; padding: 48px 20px; }
+      .final-cta__side { border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 16px; }
+
+      .to-top { right: 16px; bottom: 16px; width: 40px; height: 40px; }
+
+      /* Мобильная адаптация фона — убираем лишнее */
+      .bg-mandala.mA,
+      .bg-moons .moon.m1 { display: none; }
     }
 
-    @media (max-width: 520px) {
-      .hero-meta, .data-grid { grid-template-columns: 1fr; }
-      .section { padding: 56px 20px; }
-      .to-top { right: 16px; bottom: 16px; }
+    @media (max-width: 480px) {
+      .hero-actions .button { width: 100%; justify-content: space-between; }
+      .facts-grid { grid-template-columns: 1fr; }
     }
 
-    /* ===== Печать ===== */
+    /* Печать */
     @media print {
-      body::before, body::after { display: none; }
-      .site-header, .transmission, .final-cta__image,
-      .hero-image, .read-progress, .to-top, .nav-toggle { display: none !important; }
+      body::before, .read-progress, .to-top, .nav-toggle,
+      .bg-layer, .bg-trunks, .bg-horizontals, .bg-crosses,
+      .bg-rays, .bg-pine, .bg-moons, .bg-mandala { display: none !important; }
       body { background: #fff; color: #000; }
-      .hero::after, .final-cta::after { display: none; }
-      .hero-meta { border-color: #ccc; background: #ccc; }
-      .hero-meta > div { background: #fff; }
-      .data-grid { border-color: #ccc; background: #ccc; }
-      .data-grid > div { background: #fff; }
-      .section { border-bottom: 1px solid #ccc; }
-      .section::before, .section::after { display: none; }
+      .site-header { display: none; }
+      .final-cta { background: #fff; color: #000; }
+      .final-cta__text { color: #000; }
       a { color: #000; text-decoration: underline; }
-      .redacted { background: #000; color: #000; box-shadow: none; }
+      .redacted { background: #000; color: #000; }
+      .site-aside { display: none; }
       .site-photo__img { transform: none !important; filter: none; }
     }
   </style>
 
   <script defer>
     document.addEventListener('DOMContentLoaded', function () {
-
-      /* ===== Мобильное меню ===== */
       var toggle = document.querySelector('.nav-toggle');
       var nav = document.getElementById('site-nav');
-
       if (toggle && nav) {
         toggle.addEventListener('click', function () {
           var open = nav.classList.toggle('is-open');
           toggle.setAttribute('aria-expanded', String(open));
         });
-
         nav.addEventListener('click', function (e) {
           if (e.target.tagName === 'A') {
             nav.classList.remove('is-open');
@@ -626,7 +902,6 @@
         });
       }
 
-      /* ===== Полоса прогресса чтения ===== */
       var progressBar = document.querySelector('.read-progress span');
       if (progressBar) {
         var updateProgress = function () {
@@ -640,23 +915,17 @@
         updateProgress();
       }
 
-      /* ===== Кнопка «наверх» ===== */
       var toTop = document.querySelector('.to-top');
       if (toTop) {
         window.addEventListener('scroll', function () {
-          if (window.scrollY > 600) {
-            toTop.classList.add('is-visible');
-          } else {
-            toTop.classList.remove('is-visible');
-          }
+          if (window.scrollY > 600) toTop.classList.add('is-visible');
+          else toTop.classList.remove('is-visible');
         }, { passive: true });
-
         toTop.addEventListener('click', function () {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
 
-      /* ===== Подсветка активного пункта навигации ===== */
       var navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
       var sections = [];
       navLinks.forEach(function (link) {
@@ -666,7 +935,6 @@
           if (el) sections.push({ id: id, el: el, link: link });
         }
       });
-
       if (sections.length && 'IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -678,17 +946,13 @@
             }
           });
         }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
         sections.forEach(function (s) { observer.observe(s.el); });
       }
 
-      /* ===== Фоновая музыка ===== */
       var bgMusic = document.getElementById('bg-music');
       var musicStarted = false;
-
       if (bgMusic) {
-        bgMusic.volume = 0.02; // ← ГРОМКОСТЬ: 0.0 – 1.0
-
+        bgMusic.volume = 0.02;
         function startBgMusic() {
           if (musicStarted) return;
           bgMusic.play().then(function () {
@@ -696,7 +960,6 @@
             removeStartListeners();
           }).catch(function () {});
         }
-
         function removeStartListeners() {
           document.removeEventListener('click', startBgMusic);
           document.removeEventListener('keydown', startBgMusic);
@@ -704,7 +967,6 @@
           document.removeEventListener('touchstart', startBgMusic);
           document.removeEventListener('mousemove', startBgMusic);
         }
-
         document.addEventListener('click', startBgMusic);
         document.addEventListener('keydown', startBgMusic);
         document.addEventListener('scroll', startBgMusic);
@@ -716,15 +978,48 @@
 </head>
 
 <body data-page="operation">
+
+  <!-- ФОН — ЛЕС / КУЛЬТ -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-pine"></div>
+
+    <div class="bg-trunks">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="bg-moons">
+      <div class="moon m1"></div>
+      <div class="moon m2"></div>
+      <div class="moon m3"></div>
+    </div>
+
+    <div class="bg-mandala mA"></div>
+    <div class="bg-mandala mB"></div>
+
+    <div class="bg-horizontals">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="bg-crosses">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="bg-rays">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
   <a class="skip-link" href="#main">К содержанию</a>
 
-  <!-- Полоса прогресса чтения -->
   <div class="read-progress" aria-hidden="true"><span></span></div>
 
   <header class="site-header">
     <a class="brand" href="#main" aria-label="Операция «Спящее Эхо» — главная">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span>СПЯЩЕЕ ЭХО</span>
+      <span>Спящее Эхо</span>
+      <span class="brand-meta">// OP-ECHO-2025</span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
       <span></span><span></span>
@@ -742,138 +1037,205 @@
     <!-- HERO -->
     <section class="hero">
       <img class="hero-image" src="hero_sleeping_echo.jpg" alt="" fetchpriority="high" decoding="async">
-      <div class="hero-content shell">
-        <p class="eyebrow"><span class="status-dot"></span> Западная Сибирь // 2025</p>
-        <h1>СПЯЩЕЕ<br><em>ЭХО</em></h1>
+
+      <div class="hero-topbar">
+        <span class="status-line"><span class="dot" aria-hidden="true"></span> МОГ БЕТА-777 // «КОПЬЁ ГЕКАТЫ»</span>
+        <span>ОПЕРАЦИЯ №OP-ECHO-2025 // ЗАПАДНАЯ СИБИРЬ</span>
+      </div>
+
+      <div class="hero-content">
+        <p class="eyebrow">// 00 — СЛУЖЕБНАЯ НЕОБХОДИМОСТЬ · ЗАПАДНАЯ СИБИРЬ · 2025</p>
+        <h1>Спящее<br><em>Эхо</em></h1>
         <p class="hero-lead">Операция Мобильной Оперативной Группы Бета-777 «Копьё Гекаты» по прерыванию тауматургического ритуала неизвестной классификации. Западная Сибирь, <span class="redacted" title="Данные изъяты">█████</span>, Российская Федерация.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#background">Открыть материалы <span>→</span></a>
           <a class="button button-ghost" href="#operation">Ход операции <span>→</span></a>
         </div>
       </div>
-      <div class="hero-meta shell" aria-label="Основные данные">
-        <div><span>Операция</span><strong>СПЯЩЕЕ ЭХО</strong></div>
-        <div><span>Подразделение</span><strong>МОГ Бета-777</strong></div>
-        <div><span>Регион</span><strong>Западная Сибирь</strong></div>
-        <div><span>Статус</span><strong class="ok">Подавлен</strong></div>
+
+      <div class="hero-meta" aria-label="Основные данные">
+        <div data-idx="/01"><span>Операция</span><strong>СПЯЩЕЕ ЭХО</strong></div>
+        <div data-idx="/02"><span>Подразделение</span><strong>МОГ БЕТА-777</strong></div>
+        <div data-idx="/03"><span>Регион</span><strong>ЗАПАДНАЯ СИБИРЬ</strong></div>
+        <div data-idx="/04"><span>Статус</span><strong class="ok">ПОДАВЛЕН</strong></div>
       </div>
     </section>
 
-    <!-- СИСТЕМНОЕ УВЕДОМЛЕНИЕ -->
+    <!-- УВЕДОМЛЕНИЕ -->
     <aside class="transmission" aria-label="Системное уведомление">
-      <div class="shell transmission-inner">
-        <span class="transmission-label">⚠ Служебная необходимость</span>
+      <div class="transmission-inner">
+        <span class="transmission-label">СЛУЖЕБНАЯ НЕОБХОДИМОСТЬ</span>
         <p>Документ содержит сведения ограниченного доступа. Просмотр разрешён сотрудникам с соответствующим уровнем допуска и/или по принципу служебной необходимости. При случайном доступе — прекратите чтение и доложите руководителю.</p>
+        <span class="transmission-code">[REF: OP-ECHO-3.1]</span>
       </div>
     </aside>
 
     <!-- I. ПРЕДЫСТОРИЯ -->
-    <section class="section shell situation" id="background">
-      <div class="section-heading">
-        <p class="section-code">01 // Предыстория и триггер разведданных</p>
-        <h2>Аномалия в тайге</h2>
-      </div>
-
-      <div class="story-layout">
-        <!-- ЛЕВО: текст -->
-        <div class="situation-copy">
-          <p class="lead">В декабре, 2023 года в Западной Сибири, недалеко от <span class="redacted" title="Данные изъяты">█████</span>, сеть Фонда, которая следит за сверхъестественными погодными явлениями, засекла постоянную аномалию. Она исходила от тауматургического излучения. Это излучение усиливалось толчками, но его характеристики не совпадали ни с одной из известных тауматургических систем.</p>
-          <p>Специалисты из Зоны-91 не смогли точно определить, что происходит. Отдел тауматургического анализа подтвердил только, что кто-то занимается тауматургией, пытаясь воздействовать на окружающаю реальность. Но какой именно ритуал проводился, с какой целью и к какой школе он относится, было неизвестно. В отчете говорилось, о попытке вмешательства в пространства и воздействие на Юм, в личных целях.</p>
-          <p>Поскольку фонду не удалось установить источник несанкционированного применения тауматургии, а инцидент не соответствовал почерку ни одной из известных Связанных Организаций, было принято решение направить отряд МОГ Бета-777 для немедленной остановки процесса и сдерживания неизвестной угрозы.</p>
-          <p>С помощью спутниковой тепловизионной съемки Фонда стало известно, что центр аномалии находился в густом хвойном лесу. На поляне стояла старая каменная православная церковь, построенная в советское время. Само здание не представляло опасности, но в его подвале обнаружили следы сильной тауматургической активности: стены были покрыты странными символами, в которых сочетались руны и жуткие образы.</p>
-          <p>Отряд Бета-777 «Копьё Гекаты», который постоянно базируется в Зоне-91 и может быстро перемещаться по всему миру, успешно справился с задачей в течение 48 часов. Этот отряд специализируется на тауматургических операциях и борьбе с ритуалами.</p>
+    <section class="section" id="background">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 01. ПРЕДЫСТОРИЯ</p>
+          <h2>Аномалия<br>в тайге</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">OBJ</span><span class="v">OBJ-03 / CHURCH</span></div>
+            <div class="row"><span class="k">TRIG</span><span class="v">2023-12</span></div>
+            <div class="row"><span class="k">THREAT</span><span class="v">THAUM-CLASS</span></div>
+          </div>
         </div>
 
-        <!-- ПРАВО: карточка объекта -->
-        <aside class="site-aside" aria-label="Справка по объекту">
-
-          <div class="site-card">
-            <p class="site-card__title">
-              <span>// Фотофиксация</span>
-              <span>OBJ-03</span>
-            </p>
-            <figure class="site-photo" style="margin:0;">
-              <img class="site-photo__img" src="church_cult.jpg" alt="Фотофиксация объекта — церковь в Западной Сибири">
-            </figure>
-            <p class="site-photo__caption">Изображение сделанное оперативником <span class="redacted" title="Данные изъяты">█████</span></p>
+        <div class="story-layout">
+          <div class="situation-copy">
+            <p class="lead">В декабре 2023 года в Западной Сибири, недалеко от <span class="redacted" title="Данные изъяты">█████</span>, сеть Фонда, которая следит за сверхъестественными погодными явлениями, засекла постоянную аномалию. Она исходила от тауматургического излучения. Это излучение усиливалось толчками, но его характеристики не совпадали ни с одной из известных тауматургических систем.</p>
+            <p>Специалисты из Зоны-91 не смогли точно определить, что происходит. Отдел тауматургического анализа подтвердил только, что кто-то занимается тауматургией, пытаясь воздействовать на окружающую реальность. Но какой именно ритуал проводился, с какой целью и к какой школе он относится — было неизвестно. В отчёте говорилось о попытке вмешательства в пространство и воздействии на Юм в личных целях.</p>
+            <p>Поскольку Фонду не удалось установить источник несанкционированного применения тауматургии, а инцидент не соответствовал почерку ни одной из известных Связанных Организаций, было принято решение направить отряд МОГ Бета-777 для немедленной остановки процесса и сдерживания неизвестной угрозы.</p>
+            <p>С помощью спутниковой тепловизионной съёмки Фонда стало известно, что центр аномалии находился в густом хвойном лесу. На поляне стояла старая каменная православная церковь, построенная в советское время. Само здание не представляло опасности, но в его подвале обнаружили следы сильной тауматургической активности: стены были покрыты странными символами, в которых сочетались руны и жуткие образы.</p>
+            <p>Отряд Бета-777 «Копьё Гекаты», который постоянно базируется в Зоне-91 и может быстро перемещаться по всему миру, успешно справился с задачей в течение 48 часов. Этот отряд специализируется на тауматургических операциях и борьбе с ритуалами.</p>
           </div>
 
-          <div class="site-card">
-            <p class="site-card__title">
-              <span>// Справка по объекту</span>
-            </p>
-            <dl style="margin:0;">
-              <div class="site-row"><dt>Тип</dt><dd>Церковь</dd></div>
-              <div class="site-row"><dt>Постройка</dt><dd><span class="redacted" title="XX-го века. Примерно 1973-1984 годов">█████</span></dd></div>
-              <div class="site-row"><dt>Расположение</dt><dd>На поляне, хвойного леса</dd></div>
-              <div class="site-row"><dt>Статус</dt><dd>Нейтрализован</dd></div>
-            </dl>
-          </div>
+          <aside class="site-aside" aria-label="Справка по объекту">
+            <div class="site-card">
+              <p class="site-card__title">
+                <span>// ФОТОФИКСАЦИЯ</span>
+                <span>OBJ-03</span>
+              </p>
+              <figure class="site-photo" style="margin:0;">
+                <img class="site-photo__img" src="church_cult.jpg" alt="Фотофиксация объекта — церковь в Западной Сибири">
+              </figure>
+              <p class="site-photo__caption">Изображение сделано оперативником <span class="redacted" title="Данные изъяты">█████</span></p>
+            </div>
 
-        </aside>
+            <div class="site-card">
+              <p class="site-card__title">
+                <span>// СПРАВКА ПО ОБЪЕКТУ</span>
+                <span>OBJ-03</span>
+              </p>
+              <dl style="margin:0;">
+                <div class="site-row"><dt>Тип</dt><dd>Церковь</dd></div>
+                <div class="site-row"><dt>Постройка</dt><dd><span class="redacted" title="XX-го века. Примерно 1973-1984 годов">█████</span></dd></div>
+                <div class="site-row"><dt>Расположение</dt><dd>На поляне, хвойный лес</dd></div>
+                <div class="site-row"><dt>Статус</dt><dd class="ok">Нейтрализован</dd></div>
+              </dl>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
     <!-- II. ХОД ОПЕРАЦИИ -->
-    <section class="section shell protocol" id="operation">
-      <div class="section-heading">
-        <p class="section-code">02 // Ход операции</p>
-        <h2>Этапы операции</h2>
+    <section class="section" id="operation">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 02. ХОД ОПЕРАЦИИ</p>
+          <h2>Этапы<br>операции</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">DUR</span><span class="v">≈ 48 h</span></div>
+            <div class="row"><span class="k">PHASES</span><span class="v">03</span></div>
+            <div class="row"><span class="k">STATUS</span><span class="v">DONE</span></div>
+          </div>
+        </div>
+
+        <ol class="protocol-list">
+          <li>
+            <div class="stage__left">
+              <span class="stage__num">I</span>
+              <span class="stage__label">ЭТАП I</span>
+            </div>
+            <div class="stage__body">
+              <h3>Подготовка и оценка</h3>
+              <p>Передовой отряд Бета-777 развернул на границе целевой зоны временный командный пункт. Прикреплённые к группе тауматургические специалисты из Зоны-91 дистанционно проверили подвал церкви. По результатам сканирования стало ясно, что внутри подвала сосредоточен средний уровень тауматургической энергии, а сам ритуал всё ещё накапливает силу и пока не начал её высвобождать. Проще говоря, культ ещё не успел завершить финальную стадию, но времени у него оставалось совсем немного.</p>
+              <p>Специалисты смогли определить: ритуал должен был открыть путь между нашим измерением и чужим. Уже зная печальные события, группа сразу перешла к силовому срыву процесса.</p>
+            </div>
+          </li>
+
+          <li>
+            <div class="stage__left">
+              <span class="stage__num">II</span>
+              <span class="stage__label">ЭТАП II</span>
+            </div>
+            <div class="stage__body">
+              <h3>Проникновение и боестолкновение</h3>
+              <p>Бета-777 атаковала сразу с двух сторон: через главный вход в церковь и через внешний вентиляционный проход в подвал. Внутри находились семь членов культа. У всех было оружие и тауматургические способности. Кроме того, они пользовались простыми, но крепкими щитами и защитными печатями, чтобы скрываться от разведки. Бой продолжался около 11 минут. Благодаря численному преимуществу и заранее подготовленным Зоной-91 контрзаклинаниям Бета-777 быстро сломила оборону противника. Все семеро членов культа были уничтожены, выживших не осталось.</p>
+              <p>Среди мирных жителей никто не пострадал: в радиусе 12 километров от зоны не было постоянных населённых пунктов. У личного состава Бета-777 тоже обошлось без потерь. Тела оккультистов были сожжены на месте, во избежание воскрешения. Далее группа начала обыскивать место проведения ритуала на наличие оккультных предметов.</p>
+            </div>
+          </li>
+
+          <li>
+            <div class="stage__left">
+              <span class="stage__num">III</span>
+              <span class="stage__label">ЭТАП III</span>
+            </div>
+            <div class="stage__body">
+              <h3>Контрритуал и анализ на месте</h3>
+              <p>Самая важная находка ждала на северной стене подвала церкви. Там была нарисована огромная и очень сложная мандала, сделанная человеческой кровью и каким-то неизвестным тауматургическим раствором. По внешнему кругу тянулась цепочка рун, символы были похожи на даэвские, но сильно искажённые. Внутри был уже совсем другой рисунок — набор жутких символов, которых раньше нигде не встречали: спирали, знаки закрытых глаз и повторяющиеся мотивы «дверь/разлом».</p>
+              <p>Именно сочетание этих двух уровней помогло специалистам понять назначение ритуала. Всё указывало на «сдвиг» между измерениями — на насильственное смещение границы между привычной реальностью и каким-то параллельным миром, чтобы появилась трещина и через неё открылся портал. Эту версию подтвердили и записи культа, найденные на месте.</p>
+              <p>Были обнаружены рукописи культистов, где русский текст использовался вперемешку с древнегреческим. Внутри содержалась подробная информация о проведении ритуала, его свойства и итог воздействия.</p>
+            </div>
+          </li>
+        </ol>
       </div>
-      <ol class="protocol-list">
-        <li data-index="I">
-          <span>Этап I</span>
-          <div>
-            <h3>Подготовка и оценка</h3>
-            <p>Передовой отряд Бета-777 развернул на границе целевой зоны временный командный пункт. Прикреплённые к группе тауматургические специалисты из Зоны-91 дистанционно проверили подвал церкви. По результатам сканирования стало ясно, что в внутри подвала сосредоточен средний уровень тауматургической энергии, а сам ритуал всё ещё накапливает силу и пока не начал её высвобождать. Проще говоря, культ ещё не успел завершить финальную стадию, но времени у него оставалось совсем немного.</p>
-            <p>Специалисты смогли определить, ритуал должен был открыть путь между нашим измерением и чужим. Уже зная печальные события, группа сразу перешла к силовому срыву процесса.</p>
-          </div>
-        </li>
-        <li data-index="II">
-          <span>Этап II</span>
-          <div>
-            <h3>Проникновение и боестолкновение</h3>
-            <p>Бета-777 атаковала сразу с двух сторон: через главный вход в церковь и через внешний вентиляционный проход в подвал. Внутри находились семь членов культа. У всех было оружие и тауматургические способности. Кроме того, они пользовались простыми, но крепкими щитами и защитными печатями, чтобы скрываться от разведки. Бой продолжался около 11 минут. Благодаря численному преимуществу и заранее подготовленным Зоной-91 контрзаклинаниям Бета-777 быстро сломила оборону противника. Все семеро членов культа были уничтожены, выживших не осталось.</p>
-            <p>Среди мирных жителей никто не пострадал: в радиусе 12 километров от зоны не было постоянных населённых пунктов. У личного состава Бета-777 тоже обошлось без потерь. Тела оккультистов были сожжены на месте, во избежания воскрешения. Далее группа начала обыскивать место проведения ритуала, на наличие оккульных предметов.</p>
-          </div>
-        </li>
-        <li data-index="III">
-          <span>Этап III</span>
-          <div>
-            <h3>Контрритуал и анализ на месте</h3>
-            <p>Самая важная находка ждала на северной стене подвала церкви. Там была нарисована огромная и очень сложная мандала, сделанная человеческой кровью и каким-то неизвестным тауматургическим раствором. По внешнему кругу тянулась цепочка рун, символы были похожи на даэвские, но сильно искажённая. Внутри был уже совсем другой рисунок — набор жутких символов, которых раньше нигде не встречали: спирали, знаки закрытых глаз и повторяющиеся мотивы «дверь/разлом».</p>
-            <p>Именно сочетание этих двух уровней помогло специалистам понять назначение ритуала. Всё указывало на «сдвиг» между измерениями — на насильственное смещение границы между привычной реальностью и каким-то параллельным миром, чтобы появилась трещина и через неё открылся портал. Эту версию подтвердили и записи культа, найденные на месте.</p>
-            <p>Были обнаружены рукописи культистов, где русский текст использовался в перемешку с древнегреческим. Внутри содержалась подробная информация о проведение ритуала, его свойства и итог воздействия.</p>
-          </div>
-        </li>
-      </ol>
     </section>
 
     <!-- III. РЕЗУЛЬТАТЫ -->
-    <section class="section shell facts" id="results">
-      <div class="section-heading">
-        <p class="section-code">03 // Результаты и последствия</p>
-        <h2>Итог</h2>
-      </div>
-      <div class="situation-copy">
-        <p>Все 7 членов культа уничтожены, выживших нет.</p>
-        <p>Ритуал успешно подавлен, сдвиг измерений не завершён, «путь» не сформирован, угрозы из другого измерения не проникли в базовую реальность.</p>
-        <p>Потерь среди гражданского населения нет, потерь среди Бета-777 нет.</p>
-        <p>Артефакты и рукописи с места переданы в Зону-91 для углублённого тауматургического анализа, приоритетное направление — происхождение «символической системы кошмарных образов», природа предполагаемого параллельного измерения и возможные координаты разрыва.</p>
+    <section class="section" id="results">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 03. РЕЗУЛЬТАТЫ</p>
+          <h2>Итог</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">CULT</span><span class="v">7 / 7</span></div>
+            <div class="row"><span class="k">CIV</span><span class="v">0 LOSS</span></div>
+            <div class="row"><span class="k">TASK</span><span class="v">COMPLETE</span></div>
+          </div>
+        </div>
+
+        <div class="facts-grid" aria-label="Сводка результатов">
+          <div data-idx="/01">
+            <dt>Уничтожено</dt>
+            <dd class="alert">7 / 7</dd>
+          </div>
+          <div data-idx="/02">
+            <dt>Потери Бета-777</dt>
+            <dd class="ok">0</dd>
+          </div>
+          <div data-idx="/03">
+            <dt>Потери гражданских</dt>
+            <dd class="ok">0</dd>
+          </div>
+          <div data-idx="/04">
+            <dt>Статус ритуала</dt>
+            <dd class="ok">ПОДАВЛЕН</dd>
+          </div>
+        </div>
+
+        <div class="facts-list">
+          <p>Все 7 членов культа уничтожены, выживших нет.</p>
+          <p>Ритуал успешно подавлен: сдвиг измерений не завершён, «путь» не сформирован, угрозы из другого измерения не проникли в базовую реальность.</p>
+          <p>Потерь среди гражданского населения нет, потерь среди Бета-777 нет.</p>
+          <p>Артефакты и рукописи с места переданы в Зону-91 для углублённого тауматургического анализа. Приоритетные направления — происхождение «символической системы кошмарных образов», природа предполагаемого параллельного измерения и возможные координаты разрыва.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ФИНАЛЬНЫЙ БЛОК -->
+    <!-- ФИНАЛ -->
     <section class="final-cta">
       <img class="final-cta__image" src="down.jpg" alt="" loading="lazy" decoding="async">
-      <div class="shell final-cta-inner">
-        <p class="section-code">Операция // Спящее Эхо</p>
-        <p class="final-cta__text">Документ подготовлен по материалам послеоперационного отчёта МОГ Бета-777 «Копьё Гекаты». При обнаружении расхождений или ошибок — обратитесь к куратору операции.</p>
+      <div class="final-cta-inner">
+        <aside class="final-cta__side" aria-hidden="true">
+          <div><span class="k">OP //</span> <span class="v">SPYASHHEE EHO</span></div>
+          <div><span class="k">UNIT //</span> <span class="v">BETA-777</span></div>
+          <div><span class="k">REG //</span> <span class="v">W-SIBERIA</span></div>
+          <div><span class="k">DATE //</span> <span class="v">2025</span></div>
+          <div><span class="k">CLR //</span> <span class="v">L-3 / EYES</span></div>
+          <div><span class="k">EOF //</span> <span class="v">■</span></div>
+        </aside>
+
+        <div>
+          <p class="final-cta__text">Документ подготовлен по материалам послеоперационного отчёта МОГ Бета-777 «Копьё Гекаты». При обнаружении расхождений или ошибок — обратитесь к куратору операции.</p>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Кнопка наверх -->
   <button class="to-top" type="button" aria-label="Наверх">↑</button>
 
   <audio id="bg-music" src="theme2.mp3" loop preload="auto"></audio>
