@@ -3,943 +3,1219 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0b0b">
+  <meta name="theme-color" content="#050505">
   <meta name="description" content="ЛИЧНОЕ ДЕЛО // РАЙАН СОМЕРСЕТ // «Аркейн» — оперативник ТГ «Ранкор», USAKUK-Site-03">
   <meta name="robots" content="noindex, nofollow">
   <title>ЛИЧНОЕ ДЕЛО // РАЙАН СОМЕРСЕТ // «АРКЕЙН»</title>
 
-  <meta property="og:type" content="profile">
-  <meta property="og:title" content="ЛИЧНОЕ ДЕЛО // РАЙАН СОМЕРСЕТ // «АРКЕЙН»">
-  <meta property="og:description" content="Оперативник ТГ «Ранкор», USAKUK-Site-03. Уровень допуска 3.">
-  <meta property="og:image" content="hero.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== База ===== */
+    /* =========================================================
+       ПЕРЕМЕННЫЕ
+       ========================================================= */
     :root {
-      --bg: #0a0b0b;
-      --bg-soft: #101212;
-      --line: #232626;
-      --line-strong: #333838;
-      --text: #e7eae8;
-      --muted: #8a908d;
-      --alert: #d98a6a;
+      --bg: #050505;
+      --bg-soft: #0a0a0a;
+      --bg-panel: #0e0e0e;
+      --bg-panel-hi: #141414;
+
+      --ink: #f2f2f2;
+      --ink-mid: #a8a8a8;
+      --ink-dim: #6a6a6a;
+      --ink-faint: #3a3a3a;
+
+      --line: #1c1c1c;
+      --line-mid: #2a2a2a;
+      --line-strong: #4a4a4a;
+
+      --accent: #ffffff;
+      --alert: #d94a3d;
       --ok: #7fbf7f;
-      --no: #d97a7a;
-      --link: #8e7cc3;
-      --shell: 1100px;
-      --mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --shell: 1280px;
+      --sans: "Inter", system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     html, body { margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
-      color: var(--text);
-      font: 16px/1.6 "Inter", "Helvetica Neue", Arial, sans-serif;
+      color: var(--ink);
+      font: 15px/1.6 var(--sans);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
       position: relative;
+      min-height: 100vh;
     }
 
-    /* Сканлайны */
-    body::before {
-      content: "";
+    /* =========================================================
+       МНОГОСЛОЙНЫЙ ФОН
+       ========================================================= */
+    .bg-layer {
       position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: repeating-linear-gradient(
-        180deg,
-        rgba(255,255,255,.012) 0px,
-        rgba(255,255,255,.012) 1px,
-        transparent 1px,
-        transparent 3px
-      );
-      mix-blend-mode: overlay;
+      pointer-events: none; z-index: 0;
+      overflow: hidden;
     }
-
-    /* Виньетка */
-    body::after {
+    .bg-layer::before {
       content: "";
-      position: fixed; inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background: radial-gradient(
-        ellipse at center,
-        transparent 55%,
-        rgba(0,0,0,.55) 100%
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity: .55;
+      mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
+    }
+    .bg-layer::after {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 90px 90px;
+      mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
+    }
+    .bg-diag {
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -30deg,
+        rgba(255,255,255,.018) 0 1px,
+        transparent 1px 22px
       );
+      opacity: .6;
+      mask-image: radial-gradient(ellipse at 30% 60%, #000 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at 30% 60%, #000 20%, transparent 70%);
+    }
+    .bg-rails { position: absolute; inset: 0; }
+    .bg-rails span {
+      position: absolute; top: 0; bottom: 0;
+      width: 1px;
+      background-image: linear-gradient(var(--line-mid) 50%, transparent 50%);
+      background-size: 1px 16px;
+      opacity: .55;
+    }
+    .bg-rails span:nth-child(1) { left: 6%; }
+    .bg-rails span:nth-child(2) { left: 24%; }
+    .bg-rails span:nth-child(3) { left: 50%; opacity: .25; }
+    .bg-rails span:nth-child(4) { left: 76%; }
+    .bg-rails span:nth-child(5) { left: 94%; }
+
+    .bg-ticks { position: absolute; inset: 0; font-family: var(--mono); }
+    .bg-ticks .tick {
+      position: absolute;
+      width: 10px; height: 1px;
+      background: var(--line-strong);
+      opacity: .5;
+    }
+    .bg-ticks .tick::after {
+      content: attr(data-num);
+      position: absolute;
+      left: 16px; top: -5px;
+      font-size: 8px;
+      letter-spacing: .15em;
+      color: var(--ink-faint);
+    }
+    .bg-ticks .tick.l { left: 4%; }
+    .bg-ticks .tick.r { right: 4%; }
+    .bg-ticks .tick.r::after { left: auto; right: 16px; }
+
+    .bg-horizontals { position: absolute; inset: 0; }
+    .bg-horizontals span {
+      position: absolute; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line-mid) 15%, var(--line-mid) 85%, transparent);
+      opacity: .45;
+    }
+    .bg-horizontals span:nth-child(1) { top: 18%; }
+    .bg-horizontals span:nth-child(2) { top: 42%; }
+    .bg-horizontals span:nth-child(3) { top: 66%; }
+    .bg-horizontals span:nth-child(4) { top: 88%; }
+
+    .bg-panels { position: absolute; inset: 0; }
+    .bg-panels .panel {
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.012);
+    }
+    .bg-panels .panel.p1 {
+      top: 6%; left: 2%;
+      width: 200px; height: 130px;
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 8px 8px;
+    }
+    .bg-panels .panel.p2 {
+      top: 10%; right: 3%;
+      width: 160px; height: 100px;
+    }
+    .bg-panels .panel.p2::before {
+      content: "";
+      position: absolute; inset: 8px;
+      border: 1px dashed rgba(255,255,255,.08);
+    }
+    .bg-panels .panel.p3 {
+      bottom: 8%; left: 4%;
+      width: 220px; height: 80px;
+      border-style: dashed;
+    }
+    .bg-panels .panel.p4 {
+      bottom: 12%; right: 2%;
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.05), transparent 70%);
+    }
+    .bg-panels .panel.p5 {
+      top: 46%; left: 0;
+      width: 40px; height: 40px;
+      background-image: radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px);
+      background-size: 4px 4px;
+      border: 0;
+    }
+    .bg-panels .panel.p6 {
+      top: 70%; right: 0;
+      width: 32px; height: 32px;
+      background-image: radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px);
+      background-size: 4px 4px;
+      border: 0;
     }
 
+    .bg-crosses { position: absolute; inset: 0; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+    .bg-crosses span { position: absolute; opacity: .55; }
+    .bg-crosses span::before { content: "+"; }
+    .bg-crosses span:nth-child(1) { top: 12%; left: 8%; }
+    .bg-crosses span:nth-child(2) { top: 38%; right: 6%; }
+    .bg-crosses span:nth-child(3) { bottom: 22%; left: 14%; }
+    .bg-crosses span:nth-child(4) { bottom: 6%; right: 12%; }
+    .bg-crosses span:nth-child(5) { top: 62%; left: 3%; }
+    .bg-crosses span:nth-child(6) { top: 26%; right: 2%; }
+    .bg-crosses span:nth-child(7) { bottom: 42%; left: 6%; }
+    .bg-crosses span:nth-child(8) { top: 78%; right: 8%; }
+
+    .bg-rays { position: absolute; inset: 0; opacity: .35; }
+    .bg-rays span {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+      transform-origin: left center;
+    }
+    .bg-rays span:nth-child(1) { top: 22%; left: 0; width: 32%; transform: rotate(16deg); }
+    .bg-rays span:nth-child(2) { top: 58%; right: 0; width: 26%; transform: rotate(-12deg); transform-origin: right center; }
+    .bg-rays span:nth-child(3) { top: 82%; left: 38%; width: 22%; transform: rotate(5deg); }
+    .bg-rays span:nth-child(4) { top: 44%; left: 20%; width: 18%; transform: rotate(-22deg); }
+
+    /* =========================================================
+       КОНТЕНТ
+       ========================================================= */
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
 
-    ::selection { background: var(--alert); color: var(--bg); }
-
-    :focus-visible { outline: 1px solid var(--alert); outline-offset: 3px; }
+    ::selection { background: var(--ink); color: var(--bg); }
+    :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 
     .shell {
-      width: 100%;
-      max-width: var(--shell);
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 2;
+      width: 100%; max-width: var(--shell);
+      margin: 0 auto; padding: 0 48px;
+      position: relative; z-index: 2;
     }
 
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-    }
-
-    .skip-link {
-      position: absolute; left: -9999px; top: 0;
-      background: var(--text); color: var(--bg);
-      padding: 8px 12px; z-index: 100;
-    }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; left: -9999px; top: 0; background: var(--ink); color: var(--bg); padding: 8px 14px; z-index: 200; font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
     .skip-link:focus { left: 12px; top: 12px; }
 
-    /* ===== Типографика ===== */
-    .eyebrow,
-    .section-code,
-    .transmission-label {
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 12px;
-      font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
+    /* =========================================================
+       ТИПОГРАФИКА
+       ========================================================= */
+    .eyebrow, .section-code, .transmission-label { font-family: var(--mono); }
+
+    .eyebrow, .section-code, .transmission-label {
+      font-size: 10px; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--ink-dim); margin: 0 0 16px; font-weight: 500;
     }
 
-    h1, h2, h3 { font-weight: 600; letter-spacing: -.01em; margin: 0; }
+    h1, h2, h3 { margin: 0; font-weight: 500; letter-spacing: -.02em; }
+    h1 { font-size: clamp(48px, 8vw, 128px); line-height: .9; text-transform: uppercase; font-weight: 600; }
+    h1 em { font-style: normal; color: var(--ink-dim); font-weight: 300; }
+    h2 { font-size: clamp(32px, 4.5vw, 64px); line-height: .95; text-transform: uppercase; font-weight: 500; }
+    h3 { font-size: 16px; text-transform: uppercase; letter-spacing: .1em; }
 
-    h1 { font-size: clamp(40px, 7vw, 76px); line-height: .95; }
-    h1 em { font-style: normal; color: var(--muted); }
-
-    h2 { font-size: clamp(24px, 3.4vw, 36px); line-height: 1.15; }
-    h3 { font-size: 16px; }
-
-    p { margin: 0 0 12px; }
-    .lead { color: var(--text); font-size: 17px; }
-    .alert { color: var(--alert); }
-    .ok { color: var(--ok); }
-    .no { color: var(--no); }
-    .link { color: var(--link); }
-
-    @keyframes glitch {
-      0%, 100% { transform: translate(0); text-shadow: none; }
-      20% { transform: translate(-2px, 1px); text-shadow: 2px 0 var(--alert), -2px 0 #6ea8d9; }
-      40% { transform: translate(2px, -1px); text-shadow: -2px 0 var(--alert), 2px 0 #6ea8d9; }
-      60% { transform: translate(-1px, 0); }
-      80% { transform: translate(1px, 0); }
-    }
-    .hero h1 { animation: glitch 900ms ease-out 1; }
-
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(217,138,106,.6); }
-      50%      { box-shadow: 0 0 0 6px rgba(217,138,106,0); }
-    }
-    .status-dot {
-      display: inline-block;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--alert);
-      margin-right: 8px;
-      vertical-align: middle;
-      animation: pulse 2.2s ease-in-out infinite;
-    }
+    p { margin: 0 0 14px; }
 
     .redacted {
-      background: #1a1c1c;
-      color: transparent;
-      padding: 0 2px;
-      border-radius: 1px;
-      user-select: none;
-      box-shadow: inset 0 0 0 1px var(--line-strong);
+      background: var(--ink-faint); color: transparent;
+      padding: 0 4px; user-select: none; position: relative;
+    }
+    .redacted::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(0,0,0,.4) 4px 5px);
     }
 
-    .term {
-      border-bottom: 1px dashed var(--line-strong);
-      cursor: help;
-      transition: color .15s ease, border-color .15s ease;
-    }
-    .term:hover { color: var(--alert); border-color: var(--alert); }
+    .term { border-bottom: 1px dashed var(--line-strong); cursor: help; transition: color .15s, border-color .15s; }
+    .term:hover { color: var(--accent); border-color: var(--accent); }
 
-    /* ===== Шапка ===== */
-    .site-header {
-      position: sticky; top: 0; z-index: 20;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px;
-      padding: 14px 24px;
-      background: rgba(10, 11, 11, .85);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .brand {
-      display: inline-flex; align-items: center; gap: 10px;
-      font-size: 12px; letter-spacing: .22em; text-transform: uppercase;
-      font-family: var(--mono);
-    }
-    .brand-mark { width: 10px; height: 10px; background: var(--text); display: inline-block; }
-
-    .site-nav { display: flex; gap: 22px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
-    .site-nav a { color: var(--muted); transition: color .15s ease; }
-    .site-nav a:hover, .site-nav a.is-active { color: var(--text); }
-
-    .nav-toggle {
-      display: none;
-      background: none; border: 0; padding: 6px;
-      cursor: pointer;
-    }
-    .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--text); margin: 5px 0; }
-
-    /* ===== Прогресс ===== */
-    .read-progress {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 2px; background: transparent; z-index: 50;
+    .corners { position: relative; }
+    .corners::before, .corners::after {
+      content: ""; position: absolute;
+      width: 10px; height: 10px;
+      border-color: var(--line-strong); border-style: solid;
       pointer-events: none;
     }
+    .corners::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .corners::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
+
+    /* =========================================================
+       ШАПКА
+       ========================================================= */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; padding: 14px 48px;
+      background: rgba(5,5,5,.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 11px; letter-spacing: .3em; text-transform: uppercase; font-weight: 500;
+    }
+    .brand-mark { width: 10px; height: 10px; background: var(--ink); position: relative; display: inline-block; }
+    .brand-mark::after { content: ""; position: absolute; inset: 3px; background: var(--bg); }
+    .brand-meta {
+      font-size: 10px; color: var(--ink-faint);
+      letter-spacing: .2em; padding-left: 16px;
+      border-left: 1px solid var(--line-mid); display: none;
+    }
+    @media (min-width: 900px) { .brand-meta { display: inline-block; } }
+
+    .site-nav { display: flex; gap: 30px; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; }
+    .site-nav a { color: var(--ink-dim); transition: color .2s; position: relative; padding: 4px 0; }
+    .site-nav a::before {
+      content: ""; position: absolute; left: -12px; top: 50%;
+      width: 6px; height: 1px; background: var(--accent);
+      opacity: 0; transition: opacity .2s;
+    }
+    .site-nav a:hover { color: var(--ink); }
+    .site-nav a:hover::before, .site-nav a.is-active::before { opacity: 1; }
+    .site-nav a.is-active { color: var(--ink); }
+
+    .nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
+    .nav-toggle span { display: block; width: 24px; height: 1.5px; background: var(--ink); margin: 6px 0; transition: transform .3s; }
+
+    .read-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: transparent; z-index: 60; pointer-events: none; }
     .read-progress span {
       display: block; height: 100%; width: 0;
-      background: var(--alert);
+      background: var(--accent);
       transition: width .08s linear;
+      box-shadow: 0 0 12px rgba(255,255,255,.5);
     }
 
-    /* ===== Наверх ===== */
     .to-top {
-      position: fixed; right: 24px; bottom: 24px;
-      width: 40px; height: 40px;
-      background: var(--bg-soft);
-      color: var(--text);
-      border: 1px solid var(--line-strong);
+      position: fixed; right: 28px; bottom: 28px;
+      width: 46px; height: 46px;
+      background: var(--bg-panel); color: var(--ink);
+      border: 1px solid var(--line-mid);
       cursor: pointer; z-index: 30;
       opacity: 0; visibility: hidden;
-      transition: opacity .2s ease, visibility .2s ease, background .15s ease, color .15s ease;
-      font-size: 16px;
+      transition: opacity .2s, visibility .2s, background .2s, color .2s;
+      font-family: var(--mono); font-size: 14px;
       display: flex; align-items: center; justify-content: center;
     }
     .to-top.is-visible { opacity: 1; visibility: visible; }
-    .to-top:hover { background: var(--text); color: var(--bg); }
+    .to-top:hover { background: var(--ink); color: var(--bg); }
 
-    /* ===== Hero ===== */
-    .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+    /* =========================================================
+       HERO
+       ========================================================= */
+    .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line-mid); }
     .hero-image {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; opacity: .35;
-      filter: grayscale(1) contrast(1.05);
-      background: var(--bg);
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: .12;
+      filter: grayscale(1) contrast(1.1);
     }
-    .hero::after {
+    .hero::before {
       content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,11,11,.55) 0%, rgba(10,11,11,.9) 70%, var(--bg) 100%);
+      background: linear-gradient(180deg, rgba(5,5,5,.4) 0%, rgba(5,5,5,.95) 80%, #050505 100%);
       z-index: 1;
     }
-    .hero-content { position: relative; z-index: 2; padding: 110px 24px 80px; }
-    .hero-lead { max-width: 620px; color: var(--muted); margin-top: 20px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+    .hero-topbar {
+      position: relative; z-index: 3;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; padding: 28px 48px 20px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+    .hero-topbar .status-line { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
+    .hero-topbar .status-line .dot {
+      width: 6px; height: 6px; background: var(--alert);
+      border-radius: 50%; box-shadow: 0 0 8px var(--alert);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+    /* Hero — одноколоночный теперь */
+    .hero-content {
+      position: relative; z-index: 3;
+      padding: 96px 48px 100px;
+    }
+    .hero-lead {
+      max-width: 720px; margin: 36px 0 0;
+      color: var(--ink-mid); font-size: 17px;
+      font-weight: 300; line-height: 1.65;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 44px; }
 
     .hero-meta {
-      position: relative; z-index: 2;
+      position: relative; z-index: 3;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border-top: 1px solid var(--line);
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line-mid);
+      border-bottom: 1px solid var(--line-mid);
+      background: rgba(5,5,5,.4);
+      backdrop-filter: blur(4px);
     }
-    .hero-meta > div { background: var(--bg); padding: 16px 20px; }
+    .hero-meta > div {
+      padding: 22px 24px;
+      border-right: 1px solid var(--line);
+      position: relative;
+    }
+    .hero-meta > div:last-child { border-right: 0; }
+    .hero-meta > div::before {
+      content: attr(data-idx);
+      position: absolute; top: 8px; right: 10px;
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: .2em; color: var(--ink-faint);
+    }
     .hero-meta span {
-      display: block; font-size: 11px; letter-spacing: .16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-      font-family: var(--mono);
+      display: block; font-family: var(--mono);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--ink-faint);
+      margin-bottom: 8px;
     }
     .hero-meta strong {
-      font-weight: 500; font-size: 14px;
-      font-family: var(--mono);
-      font-feature-settings: "tnum" 1;
+      display: block; font-family: var(--mono);
+      font-weight: 400; font-size: 13px;
+      color: var(--ink); line-height: 1.4;
+      letter-spacing: .02em;
     }
 
-    /* ===== Кнопки ===== */
+    /* =========================================================
+       КНОПКИ
+       ========================================================= */
     .button {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 12px 18px;
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 14px 22px;
       border: 1px solid var(--line-strong);
-      font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
-      transition: background .15s ease, color .15s ease, border-color .15s ease;
-      font-family: var(--mono);
-      cursor: pointer;
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: .22em; text-transform: uppercase;
+      transition: all .2s; cursor: pointer;
+      background: transparent; color: var(--ink);
+      position: relative;
     }
-    .button span { transition: transform .15s ease; }
-    .button:hover span { transform: translateX(3px); }
-    .button-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-    .button-primary:hover { background: #fff; }
-    .button-ghost { color: var(--text); }
-    .button-ghost:hover { background: var(--bg-soft); border-color: var(--text); }
-
-    /* ===== Уведомление ===== */
-    .transmission { border-bottom: 1px solid var(--line); background: var(--bg-soft); position: relative; z-index: 2; }
-    .transmission-inner { display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px; padding: 18px 24px; }
-    .transmission-label { margin: 0; color: var(--alert); }
-    .transmission p { margin: 0; color: var(--muted); font-size: 14px; max-width: 780px; }
-
-    /* ===== Секции ===== */
-    .section { padding: 80px 24px; border-bottom: 1px solid var(--line); position: relative; }
-
-    .section::before,
-    .section::after {
-      content: "";
-      position: absolute;
-      width: 12px; height: 12px;
-      border: 1px solid var(--line-strong);
-      pointer-events: none;
+    .button::before {
+      content: ""; position: absolute;
+      left: -1px; top: -1px; width: 6px; height: 6px;
+      border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
+      opacity: 0; transition: opacity .2s;
     }
-    .section::before { top: 24px; left: 24px; border-right: 0; border-bottom: 0; }
-    .section::after  { bottom: 24px; right: 24px; border-left: 0; border-top: 0; }
+    .button::after {
+      content: ""; position: absolute;
+      right: -1px; bottom: -1px; width: 6px; height: 6px;
+      border-bottom: 1px solid var(--ink); border-right: 1px solid var(--ink);
+      opacity: 0; transition: opacity .2s;
+    }
+    .button:hover::before, .button:hover::after { opacity: 1; }
+    .button span { transition: transform .2s; }
+    .button:hover span { transform: translateX(4px); }
+    .button-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .button-primary:hover { background: var(--bg); color: var(--ink); }
+    .button-ghost:hover { background: var(--ink); color: var(--bg); }
 
-    .section-heading { margin-bottom: 32px; }
-    .situation-copy { max-width: 760px; margin-bottom: 32px; }
-    .situation-copy p { color: var(--muted); }
-    .situation-copy p.lead { color: var(--text); }
+    /* =========================================================
+       УВЕДОМЛЕНИЕ
+       ========================================================= */
+    .transmission {
+      border-bottom: 1px solid var(--line-mid);
+      background: var(--bg-soft); position: relative; z-index: 2;
+    }
+    .transmission::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background-image: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 12px);
+    }
+    .transmission-inner {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 32px; align-items: baseline;
+      padding: 26px 48px; font-family: var(--mono);
+    }
+    .transmission-label {
+      margin: 0; color: var(--alert); font-weight: 600;
+      white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .transmission-label::before { content: "▲"; font-size: 10px; }
+    .transmission p {
+      margin: 0; color: var(--ink-mid); font-size: 12px;
+      letter-spacing: .05em; max-width: 820px;
+      line-height: 1.7; font-family: var(--sans);
+    }
+    .transmission .transmission-code { color: var(--ink-faint); font-size: 10px; letter-spacing: .25em; }
 
-    /* ===== Bio ===== */
-    .bio-layout {
+    /* =========================================================
+       СЕКЦИИ
+       ========================================================= */
+    .section { padding: 96px 0; border-bottom: 1px solid var(--line); position: relative; }
+
+    .section-heading {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 300px;
-      gap: 48px;
-      align-items: start;
+      grid-template-columns: 200px 1fr 260px;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 64px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line-mid);
+      position: relative;
     }
-    .bio-layout .situation-copy { max-width: none; margin-bottom: 0; }
+    .section-heading .section-code {
+      margin: 0; color: var(--ink-dim);
+      padding-top: 8px; position: relative;
+    }
+    .section-heading .section-code::before {
+      content: ""; position: absolute;
+      top: 0; left: 0; width: 16px; height: 1px;
+      background: var(--accent);
+    }
 
-    .dossier-aside {
-      position: sticky;
-      top: 90px;
+    .section-tech {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border-left: 1px solid var(--line);
+      padding: 4px 0 4px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 6px;
+      align-self: end;
+    }
+    .section-tech .row { display: flex; justify-content: space-between; gap: 12px; }
+    .section-tech .k { color: var(--ink-faint); }
+    .section-tech .v { color: var(--ink); }
+
+    /* =========================================================
+       БИОГРАФИЯ
+       ========================================================= */
+    .bio-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 60px;
+      align-items: start;
+    }
+    .situation-copy { max-width: 760px; }
+    .situation-copy p { color: var(--ink-mid); font-size: 15px; line-height: 1.8; }
+    .situation-copy p.lead {
+      color: var(--ink); font-size: 17px; font-weight: 300; line-height: 1.7;
+      padding-left: 20px; border-left: 1px solid var(--line-strong);
+      margin-bottom: 24px;
+    }
+
+    /* =========================================================
+       СПОЙЛЕР
+       ========================================================= */
+    .spoiler {
+      border: 1px solid var(--line-mid);
+      background: var(--bg-panel);
+      margin: 32px 0; position: relative;
+      transition: border-color .2s;
+    }
+    .spoiler::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background-image: repeating-linear-gradient(90deg, var(--alert) 0 4px, transparent 4px 8px);
+      opacity: .8;
+    }
+    .spoiler[open] { border-color: var(--line-strong); }
+    .spoiler summary {
+      cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 20px;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--ink); position: relative;
+    }
+    .spoiler summary::-webkit-details-marker { display: none; }
+    .spoiler summary::before {
+      content: "+"; width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--accent); color: var(--accent);
+      font-family: var(--mono); font-size: 14px; flex: 0 0 auto;
+      transition: all .2s;
+    }
+    .spoiler[open] summary::before { content: "–"; background: var(--accent); color: var(--bg); }
+    .spoiler summary .rec-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--alert);
+      animation: blink 2s ease-in-out infinite;
+      flex: 0 0 auto; box-shadow: 0 0 8px var(--alert);
+    }
+    .spoiler summary .tag-end {
+      margin-left: auto; color: var(--ink-faint); font-size: 9px;
+    }
+    .spoiler p {
+      margin: 0; padding: 12px 24px 24px 56px;
+      color: var(--ink-mid); font-size: 14px; line-height: 1.8;
+      border-top: 1px solid var(--line);
+    }
+
+    /* =========================================================
+       БОКОВАЯ ПАНЕЛЬ DOSSIER
+       ========================================================= */
+    .dossier-aside {
+      position: sticky; top: 100px;
+      display: flex; flex-direction: column; gap: 24px;
+      font-family: var(--mono);
     }
     .dossier-card {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
+      border: 1px solid var(--line-mid);
+      background: rgba(14,14,14,.75);
+      backdrop-filter: blur(6px);
       padding: 18px;
       position: relative;
     }
-    .dossier-card::before {
-      content: "";
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 14px; height: 14px;
-      border-top: 1px solid var(--alert);
-      border-left: 1px solid var(--alert);
+    .dossier-card::before, .dossier-card::after {
+      content: ""; position: absolute;
+      width: 8px; height: 8px;
+      border-color: var(--accent); border-style: solid;
+      pointer-events: none; opacity: .8;
     }
-    .dossier-card::after {
-      content: "";
-      position: absolute;
-      bottom: -1px; right: -1px;
-      width: 14px; height: 14px;
-      border-bottom: 1px solid var(--alert);
-      border-right: 1px solid var(--alert);
-    }
+    .dossier-card::before { top: -1px; left: -1px; border-width: 1px 0 0 1px; }
+    .dossier-card::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
     .dossier-card__title {
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--ink-dim);
       margin: 0 0 14px;
       display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 12px; border-bottom: 1px solid var(--line);
     }
+    .dossier-card__title span:last-child { color: var(--accent); }
 
     .dossier-photo {
-      aspect-ratio: 3 / 4;
+      aspect-ratio: 3/4;
       background:
-        linear-gradient(180deg, rgba(217,138,106,.06), transparent 60%),
-        repeating-linear-gradient(135deg, rgba(255,255,255,.02) 0 8px, transparent 8px 16px);
-      border: 1px solid var(--line);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 14px;
+        repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 6px, transparent 6px 12px),
+        var(--bg-soft);
+      border: 1px solid var(--line-mid);
+      position: relative; overflow: hidden; margin-bottom: 16px;
     }
     .dossier-photo__img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: grayscale(1) contrast(1.05);
-      opacity: .85;
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(1) contrast(1.1); opacity: .9;
     }
     .dossier-photo__tag {
-      position: absolute;
-      top: 8px; left: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .18em;
-      color: var(--alert);
-      text-transform: uppercase;
-      z-index: 2;
-      background: rgba(10,11,11,.6);
-      padding: 2px 6px;
+      position: absolute; top: 8px; right: 8px;
+      font-family: var(--mono); font-size: 8px;
+      letter-spacing: .22em; color: var(--bg);
+      background: var(--accent); text-transform: uppercase;
+      padding: 3px 8px; z-index: 2;
     }
 
     .dossier-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--line);
-      font-size: 13px;
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 9px 0; border-bottom: 1px dashed var(--line);
+      font-size: 11px;
     }
     .dossier-row:last-child { border-bottom: 0; }
     .dossier-row dt {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
+      color: var(--ink-faint); font-family: var(--mono);
+      font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
     }
     .dossier-row dd {
-      margin: 0;
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--text);
-      text-align: right;
+      margin: 0; font-family: var(--mono);
+      font-size: 11px; color: var(--ink);
+      text-align: right; letter-spacing: .03em;
     }
 
+    /* Статус-бар — читаемый шрифт Inter 600 */
     .dossier-status {
-      display: flex; align-items: center; gap: 8px;
-      font-family: var(--mono);
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--sans);
       font-size: 12px;
-      letter-spacing: .16em;
+      font-weight: 600;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      color: var(--ok);
-    }
-
-    .dossier-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .dossier-tags span {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      padding: 4px 8px;
-      border: 1px solid var(--line-strong);
-      color: var(--muted);
-    }
-
-    /* ===== Спойлер (звонок 911) ===== */
-    .spoiler {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      margin: 20px 0;
-      transition: border-color .15s ease, background .15s ease;
-    }
-    .spoiler:hover { border-color: var(--alert); background: #131515; }
-    .spoiler[open] { border-color: var(--alert); }
-
-    .spoiler summary {
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 16px;
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--text);
-      position: relative;
-    }
-    .spoiler summary::-webkit-details-marker { display: none; }
-
-    .spoiler summary::before {
-      content: "+";
-      display: inline-flex;
-      align-items: center;
+      color: var(--bg);
+      background: var(--ink);
+      padding: 14px 18px;
       justify-content: center;
-      width: 22px; height: 22px;
-      border: 1px solid var(--alert);
-      color: var(--alert);
-      font-size: 14px;
-      line-height: 1;
-      flex: 0 0 auto;
-      transition: background .15s ease, color .15s ease;
     }
-    .spoiler[open] summary::before { content: "–"; background: var(--alert); color: var(--bg); }
-    .spoiler summary:focus-visible { outline: 1px solid var(--alert); outline-offset: -3px; }
-
-    .spoiler summary .rec-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--alert);
-      animation: pulse 2.2s ease-in-out infinite;
-      flex: 0 0 auto;
+    .dossier-status .dot {
+      width: 7px; height: 7px; background: var(--bg);
+      border-radius: 50%; animation: blink 2s ease-in-out infinite;
     }
 
-    .spoiler p {
-      margin: 0;
-      padding: 14px 16px 16px 52px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-      border-top: 1px solid var(--line);
-    }
-
-    /* ===== Психопрофиль ===== */
-    .psych-section { padding: 80px 24px; border-bottom: 1px solid var(--line); position: relative; }
-    .psych-section::before,
-    .psych-section::after {
-      content: "";
-      position: absolute;
-      width: 12px; height: 12px;
-      border: 1px solid var(--line-strong);
-      pointer-events: none;
-    }
-    .psych-section::before { top: 24px; left: 24px; border-right: 0; border-bottom: 0; }
-    .psych-section::after  { bottom: 24px; right: 24px; border-left: 0; border-top: 0; }
-    .psych-section .section-heading { margin-bottom: 24px; }
-
-    .psych-card {
-      border: 1px solid var(--line);
-      background: var(--bg-soft);
-      transition: border-color .15s ease, background .15s ease;
-    }
-    .psych-card:hover { border-color: var(--alert); background: #131515; }
-    .psych-card[open] { border-color: var(--alert); }
-
-    .psych-card > summary {
-      cursor: pointer;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--text);
+    /* =========================================================
+       ПСИХОПРОФИЛЬ
+       ========================================================= */
+    .psych-section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--line);
       position: relative;
+      background: rgba(10,10,10,.4);
+      backdrop-filter: blur(2px);
+    }
+    .psych-card {
+      border: 1px solid var(--line-mid);
+      background: rgba(5,5,5,.6);
+      backdrop-filter: blur(6px);
+      position: relative;
+    }
+    .psych-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background-image: repeating-linear-gradient(90deg, var(--ink-faint) 0 6px, transparent 6px 10px);
+    }
+    .psych-card[open] { border-color: var(--line-strong); }
+    .psych-card > summary {
+      cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 14px;
+      padding: 24px;
+      font-family: var(--mono); font-size: 11px;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--ink); font-weight: 500;
     }
     .psych-card > summary::-webkit-details-marker { display: none; }
-
     .psych-card > summary::before {
-      content: "+";
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px; height: 22px;
-      border: 1px solid var(--alert);
-      color: var(--alert);
-      font-size: 14px;
-      line-height: 1;
-      flex: 0 0 auto;
-      transition: background .15s ease, color .15s ease;
+      content: "+"; width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--accent); color: var(--accent);
+      font-family: var(--mono); font-size: 14px; flex: 0 0 auto;
+      transition: all .2s;
     }
-    .psych-card[open] > summary::before { content: "–"; background: var(--alert); color: var(--bg); }
-    .psych-card > summary:focus-visible { outline: 1px solid var(--alert); outline-offset: -3px; }
-
+    .psych-card[open] > summary::before { content: "–"; background: var(--accent); color: var(--bg); }
     .psych-card > summary .rec-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--alert);
-      animation: pulse 2.2s ease-in-out infinite;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--ink); animation: blink 2s ease-in-out infinite;
       flex: 0 0 auto;
     }
-
     .psych-card > summary .psych-card__hint {
-      margin-left: auto;
-      font-size: 10px;
-      letter-spacing: .2em;
-      color: var(--muted);
-      opacity: .7;
+      margin-left: auto; font-size: 9px;
+      letter-spacing: .25em; color: var(--ink-faint);
     }
-    .psych-card[open] > summary .psych-card__hint::after { content: "свернуть"; }
-    .psych-card:not([open]) > summary .psych-card__hint::after { content: "развернуть"; }
+    .psych-card[open] > summary .psych-card__hint::after { content: "СВЕРНУТЬ"; }
+    .psych-card:not([open]) > summary .psych-card__hint::after { content: "РАЗВЕРНУТЬ"; }
 
     .psych-card__body {
       border-top: 1px solid var(--line);
-      padding: 22px 18px;
+      padding: 32px 24px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px 32px;
+      grid-template-columns: 1.1fr 1fr 0.9fr;
+      gap: 40px;
     }
-
     .psych-sub {
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0 0 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 9px; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--ink);
+      margin: 0 0 16px;
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 500;
     }
-    .psych-sub::before { content: ""; width: 6px; height: 6px; background: var(--alert); flex: 0 0 auto; }
+    .psych-sub::before { content: ""; width: 12px; height: 1px; background: var(--accent); }
 
-    .psych-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 24px;
+    .metric-list { display: flex; flex-direction: column; gap: 10px; font-family: var(--mono); }
+    .metric {
+      display: grid; grid-template-columns: 130px 1fr 40px;
+      gap: 12px; align-items: center;
+      font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
     }
-    .psych-metrics .dossier-row { padding: 8px 0; }
-    .psych-metrics .dossier-row dd { font-feature-settings: "tnum" 1; }
+    .metric .name { color: var(--ink-dim); }
+    .metric .bar {
+      height: 8px;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 2px, transparent 2px 4px);
+      background-size: 4px 100%;
+      position: relative;
+    }
+    .metric .bar > span {
+      display: block; height: 100%;
+      background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 4px);
+      background-size: 4px 100%;
+      position: absolute; left: 0; top: 0;
+    }
+    .metric .val { color: var(--ink); text-align: right; font-size: 11px; }
 
     .psych-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .psych-tags span {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border: 1px solid var(--line-strong);
+      color: var(--ink-mid);
+      transition: all .2s;
+    }
+    .psych-tags span:hover { color: var(--bg); background: var(--ink); border-color: var(--ink); }
+    .psych-tags--strong span { color: var(--ink); border-color: var(--ink); }
+    .psych-tags--weak span { color: var(--alert); border-color: var(--alert); }
+    .psych-tags--weak span:hover { background: var(--alert); border-color: var(--alert); color: var(--bg); }
+
+    .psych-verdict {
+      border-left: 1px solid var(--line);
+      padding-left: 32px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .psych-verdict .verdict-box {
+      border: 1px solid var(--line-mid);
+      background: var(--bg-panel);
+      padding: 16px;
       font-family: var(--mono);
       font-size: 10px;
-      letter-spacing: .14em;
+      letter-spacing: .18em;
       text-transform: uppercase;
-      padding: 5px 9px;
-      border: 1px solid var(--line-strong);
-      color: var(--muted);
-      transition: color .15s ease, border-color .15s ease;
     }
-    .psych-tags span:hover { color: var(--text); border-color: var(--text); }
-    .psych-tags--strong span { color: var(--ok); border-color: rgba(127,191,127,.35); }
-    .psych-tags--strong span:hover { color: #a8e0a8; border-color: var(--ok); }
-    .psych-tags--weak span { color: var(--no); border-color: rgba(217,122,122,.35); }
-    .psych-tags--weak span:hover { color: #efaeae; border-color: var(--no); }
+    .psych-verdict .verdict-box .k { color: var(--ink-faint); display: block; margin-bottom: 8px; }
+    .psych-verdict .verdict-box .v {
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: .1em;
+    }
+    .psych-verdict .verdict-box .v.ok { color: var(--ok); }
 
     .psych-quote {
       grid-column: 1 / -1;
-      border-left: 2px solid var(--alert);
-      padding: 12px 0 12px 16px;
-      margin: 0;
-      background: rgba(217,138,106,.04);
+      border-left: 2px solid var(--accent);
+      padding: 16px 0 16px 24px;
+      margin: 8px 0 0;
+      background: rgba(255,255,255,.015);
+      position: relative;
+    }
+    .psych-quote::before {
+      content: "»";
+      position: absolute; top: -6px; left: 8px;
+      font-family: var(--mono); font-size: 24px;
+      color: var(--accent); opacity: .5;
     }
     .psych-quote p {
-      margin: 0 0 10px;
-      font-size: 14px;
-      line-height: 1.65;
-      color: var(--text);
-      font-style: italic;
+      margin: 0 0 14px;
+      font-size: 15px; line-height: 1.7;
+      color: var(--ink); font-weight: 300; font-style: italic;
     }
     .psych-quote cite {
-      display: block;
-      font-style: normal;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--muted);
+      display: block; font-style: normal;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--ink-dim);
     }
 
-    /* ===== Хронология (переработанная) ===== */
-    .chronicle-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--line-strong);
-      margin: -20px 0 24px;
-    }
+    /* =========================================================
+       ХРОНОЛОГИЯ
+       ========================================================= */
+    .chronicle .section-heading { margin-bottom: 56px; }
 
-    /* Вкладки */
     .entry-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 24px;
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 40px;
       border-bottom: 1px solid var(--line);
-      padding-bottom: 14px;
+      padding-bottom: 20px;
     }
     .entry-tab {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: transparent;
+      font-family: var(--mono); font-size: 9px;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--ink-dim); background: transparent;
       border: 1px solid var(--line-strong);
-      padding: 7px 12px;
-      cursor: pointer;
-      transition: color .15s ease, border-color .15s ease, background .15s ease;
+      padding: 8px 14px; cursor: pointer;
+      transition: all .2s; font-weight: 500;
     }
-    .entry-tab:hover { color: var(--text); border-color: var(--text); }
-    .entry-tab.is-active {
-      color: var(--bg);
-      background: var(--alert);
-      border-color: var(--alert);
-    }
-    .entry-tab .entry-tab__count {
-      opacity: .6;
-      margin-left: 6px;
-      font-size: 10px;
-    }
+    .entry-tab:hover { color: var(--ink); border-color: var(--ink); }
+    .entry-tab.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .entry-tab .entry-tab__count { opacity: .5; margin-left: 6px; font-size: 8px; }
 
-    /* Таймлайн-контейнер */
     .protocol-list {
       list-style: none;
-      margin: 0;
-      padding: 0 0 0 24px;
-      position: relative;
-    }
-    .protocol-list::before {
-      content: "";
-      position: absolute;
-      left: 8px; top: 0; bottom: 0;
-      width: 1px;
-      background: var(--line);
+      margin: 0; padding: 0;
+      border-top: 1px solid var(--line-mid);
+      counter-reset: entry;
     }
 
-    /* Заголовок года */
     .protocol-list .year-head {
-      position: relative;
-      display: block;
-      padding: 26px 0 10px;
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: 40px 0 18px;
+      margin: 0;
+      border-bottom: 1px solid var(--line);
       font-family: var(--mono);
-      font-size: 22px;
-      letter-spacing: .14em;
-      color: var(--line-strong);
-      border-bottom: 1px solid var(--line-strong);
-      margin-left: -24px;
-      padding-left: 24px;
+      font-weight: 300;
+      position: relative;
     }
-    .protocol-list .year-head::before {
+    .protocol-list .year-head:first-child { padding-top: 12px; }
+
+    .protocol-list .year-head .y-num {
+      font-size: 56px;
+      letter-spacing: .12em;
+      color: var(--ink);
+      line-height: 1;
+      position: relative;
+      padding-left: 26px;
+    }
+    .protocol-list .year-head .y-num::before {
       content: "";
       position: absolute;
-      left: 3px; top: 34px;
-      width: 11px; height: 11px;
-      background: var(--bg);
-      box-shadow: inset 0 0 0 1px var(--line-strong);
-      border-radius: 50%;
+      left: 0; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 1px;
+      background: var(--accent);
     }
-    .protocol-list .year-head span { color: var(--line-strong); }
 
-    /* Записи */
+    .protocol-list .year-head .y-rule {
+      height: 1px;
+      background-image: linear-gradient(90deg,
+        var(--line-strong) 0 4px, transparent 4px 8px);
+      background-size: 8px 1px;
+      background-repeat: repeat-x;
+      position: relative;
+    }
+
+    .protocol-list .year-head .y-tag {
+      font-size: 9px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+    }
+
     .protocol-list li.entry {
       display: grid;
-      grid-template-columns: 130px 1fr auto;
-      gap: 20px;
+      grid-template-columns: 200px 1fr 220px;
+      gap: 32px;
       align-items: start;
-      padding: 20px 0 20px 0;
+      padding: 28px 0;
       border-bottom: 1px solid var(--line);
       position: relative;
+      transition: background .2s;
+      counter-increment: entry;
+    }
+    .protocol-list li.entry:hover {
+      background: rgba(255,255,255,.014);
     }
     .protocol-list li.entry::before {
       content: "";
       position: absolute;
-      left: -20px; top: 26px;
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--bg);
-      box-shadow: inset 0 0 0 1px var(--line-strong);
+      left: -14px; top: 28px; bottom: 28px;
+      width: 2px;
+      background: transparent;
+      transition: background .2s;
     }
+    .protocol-list li.entry:hover::before { background: var(--accent); }
 
-    /* Скрытые по фильтру записи и заголовки */
     .protocol-list li.is-hidden,
     .protocol-list .year-head.is-hidden { display: none; }
 
-    /* Дата */
+    .entry__left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+    .entry__num {
+      font-family: var(--mono);
+      font-size: 40px;
+      line-height: 1;
+      color: var(--ink-faint);
+      letter-spacing: .04em;
+      font-weight: 300;
+      position: relative;
+      padding-left: 26px;
+    }
+    .entry__num::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%; transform: translateY(-50%);
+      width: 16px; height: 1px;
+      background: var(--line-strong);
+    }
+    .entry__num::after {
+      content: counter(entry, decimal-leading-zero);
+    }
+    .entry__num > span { display: none; }
+
     .entry__date {
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: .14em;
-      color: var(--muted);
-      padding-top: 4px;
+      font-size: 11px;
+      letter-spacing: .2em;
+      color: var(--ink-dim);
+      padding-left: 26px;
       font-feature-settings: "tnum" 1;
     }
 
-    /* Тело записи */
     .entry__body { min-width: 0; }
-    .entry__body p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+    .entry__body p {
+      margin: 0 0 6px;
+      color: var(--ink-mid);
+      font-size: 14px;
+      line-height: 1.7;
+    }
     .entry__body p:last-child { margin-bottom: 0; }
 
-    /* Тег категории */
-    .entry-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border: 1px solid var(--line-strong);
-      color: var(--muted);
-      margin-bottom: 8px;
+    .entry__right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      text-align: right;
     }
-    .entry-tag--op    { color: var(--alert); border-color: rgba(217,138,106,.4); }
-    .entry-tag--move  { color: var(--ok);    border-color: rgba(127,191,127,.4); }
-    .entry-tag--req   { color: var(--link);  border-color: rgba(142,124,195,.4); }
-    .entry-tag--train { color: var(--text);  border-color: var(--line-strong); }
 
-    /* Статус-бейдж (справа) */
-    .entry__status {
-      align-self: start;
-      margin-top: 4px;
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: .18em;
+    /* Читаемые теги: Inter 600 + больший размер */
+    .entry-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      padding: 4px 8px;
+      padding: 6px 12px;
+      border: 1px solid var(--line-strong);
+      color: var(--ink-mid);
+    }
+    .entry-tag--op    { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+    .entry-tag--move  { color: var(--ink); border-color: var(--ink); }
+    .entry-tag--req   { color: var(--ink-mid); }
+    .entry-tag--train { color: var(--ink-mid); border-style: dashed; }
+
+    /* Читаемые статусы: Inter 600 */
+    .entry__status {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 6px 12px;
       border: 1px solid currentColor;
       white-space: nowrap;
     }
-    .entry__status--ok { color: var(--ok); }
-    .entry__status--no { color: var(--no); }
+    .entry__status--ok { color: var(--ink); }
+    .entry__status--no { color: var(--ink-faint); }
 
-    /* Ссылки внутри записи */
-    .entry__body a {
-      color: var(--alert);
-      border-bottom: 1px solid transparent;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      transition: border-color .15s ease;
-    }
-    .entry__body a:hover { border-color: var(--alert); }
-
-    /* Актуальная (последняя) запись */
     .protocol-list li.entry.is-latest {
-      background: rgba(217,138,106,.04);
-      padding-left: 16px;
-      margin-left: -16px;
-      border-left: 2px solid var(--alert);
+      background: rgba(217,74,61,.05);
+      padding-left: 20px;
+      margin-left: -20px;
     }
     .protocol-list li.entry.is-latest::before {
-      left: -21px;
       background: var(--alert);
-      box-shadow: 0 0 0 3px rgba(217,138,106,.2);
+      left: -2px;
     }
+    .protocol-list li.entry.is-latest .entry__num { color: var(--alert); }
+    .protocol-list li.entry.is-latest .entry__num::before { background: var(--alert); }
 
-    /* ===== Финальный блок ===== */
-    .final-cta { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
-    .final-cta__image {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%; object-fit: cover;
-      opacity: .22; filter: grayscale(1);
-      background: var(--bg);
+    .entry__body a {
+      color: var(--accent); font-family: var(--mono);
+      font-size: 10px; letter-spacing: .2em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--accent);
+      padding-bottom: 1px; transition: all .2s; font-weight: 500;
+      display: inline-block;
+      margin-top: 6px;
+    }
+    .entry__body a:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* =========================================================
+       ФИНАЛ
+       ========================================================= */
+    .final-cta {
+      position: relative;
+      background: rgba(10,10,10,.6);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid var(--line-mid);
+      overflow: hidden;
     }
     .final-cta::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(10,11,11,.8), rgba(10,11,11,.95));
-      z-index: 1;
+      content: "";
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 4px;
+      background-image: repeating-linear-gradient(90deg, var(--ink-faint) 0 8px, transparent 8px 14px);
     }
-    .final-cta-inner { position: relative; z-index: 2; padding: 72px 24px; max-width: 820px; }
-    .final-cta__text { margin: 0 0 12px; color: var(--text); font-size: 17px; line-height: 1.7; }
+    .final-cta-inner {
+      position: relative; z-index: 2;
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .final-cta__side {
+      font-family: var(--mono);
+      font-size: 9px; letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--ink-faint); line-height: 2;
+      border-right: 1px solid var(--line);
+      padding-right: 24px;
+    }
+    .final-cta__side div { padding: 4px 0; }
+    .final-cta__side .k { color: var(--ink-dim); }
+    .final-cta__side .v { color: var(--ink); }
+    .final-cta__text {
+      margin: 0 0 14px;
+      color: var(--ink-mid); font-size: 15px;
+      line-height: 1.75; font-weight: 300;
+    }
+    .final-cta__text:first-child {
+      color: var(--ink); font-size: 20px;
+      font-weight: 400; margin-bottom: 24px;
+      letter-spacing: -.01em;
+    }
 
-    /* ===== Адаптив ===== */
-    @media (max-width: 960px) {
-      .bio-layout { grid-template-columns: 1fr; gap: 32px; }
+    /* =========================================================
+       АДАПТИВ
+       ========================================================= */
+    @media (max-width: 1100px) {
+      .shell { padding: 0 32px; }
+      .site-header { padding: 14px 32px; }
+      .hero-content { padding: 72px 32px 80px; }
+      .hero-topbar { padding: 24px 32px 16px; }
+      .bio-layout { grid-template-columns: 1fr; gap: 48px; }
       .dossier-aside { position: static; flex-direction: row; flex-wrap: wrap; }
       .dossier-card { flex: 1 1 260px; }
+      .dossier-status { flex: 1 1 100%; }
+      .section-heading { grid-template-columns: 180px 1fr 220px; gap: 32px; }
     }
 
-    @media (max-width: 860px) {
-      .hero-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 960px) {
+      .hero-meta { grid-template-columns: repeat(2, 1fr); }
+      .hero-meta > div:nth-child(2n) { border-right: 0; }
+      .hero-meta > div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+
+      .section-heading { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .section-tech { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 12px; }
+
+      .psych-card__body { grid-template-columns: 1fr; gap: 32px; }
+      .psych-verdict { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 24px; }
+
+      .protocol-list .year-head {
+        grid-template-columns: 100px 1fr;
+        gap: 20px;
+      }
+      .protocol-list .year-head .y-num { font-size: 42px; }
+      .protocol-list .year-head .y-tag { grid-column: 1 / -1; padding-left: 26px; }
+
+      .protocol-list li.entry {
+        grid-template-columns: 100px 1fr;
+        gap: 20px;
+      }
+      .entry__num { font-size: 32px; }
+      .entry__right {
+        grid-column: 2;
+        align-items: flex-start;
+        text-align: left;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 760px) {
+      .shell { padding: 0 20px; }
+      .site-header { padding: 12px 20px; }
       .nav-toggle { display: block; }
       .site-nav {
         position: absolute; top: 100%; left: 0; right: 0;
         flex-direction: column; gap: 0;
-        background: var(--bg);
-        border-bottom: 1px solid var(--line);
+        background: var(--bg); border-bottom: 1px solid var(--line-mid);
         display: none;
       }
       .site-nav.is-open { display: flex; }
-      .site-nav a { padding: 14px 24px; border-bottom: 1px solid var(--line); }
+      .site-nav a { padding: 16px 24px; border-bottom: 1px solid var(--line); font-size: 11px; }
+      .site-nav a::before { display: none; }
 
-      .hero-content { padding: 80px 24px 60px; }
+      .hero-topbar { padding: 20px 20px 12px; font-size: 9px; }
+      .hero-content { padding: 48px 20px 56px; }
+      .hero-lead { font-size: 15px; }
+      .hero-meta { grid-template-columns: 1fr; }
+      .hero-meta > div { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px 20px; }
+      .hero-meta > div:last-child { border-bottom: 0; }
 
-      .section::before, .section::after { display: none; }
-      .psych-section::before, .psych-section::after { display: none; }
-      .psych-section { padding: 56px 20px; }
-      .psych-card__body { grid-template-columns: 1fr; gap: 20px; }
-      .psych-metrics { grid-template-columns: 1fr; }
-      .psych-card > summary .psych-card__hint { display: none; }
+      .transmission-inner { grid-template-columns: 1fr; gap: 10px; padding: 22px 20px; }
 
-      .spoiler p { padding-left: 16px; }
+      .section, .psych-section { padding: 64px 0; }
+      .section-heading { margin-bottom: 40px; padding-bottom: 20px; }
 
-      /* Хронология */
-      .protocol-list { padding-left: 16px; }
-      .protocol-list::before { left: 4px; }
+      .spoiler p { padding-left: 20px; }
+      .psych-quote { padding-left: 18px; }
+
+      .protocol-list .year-head { grid-template-columns: 1fr; gap: 8px; padding: 32px 0 12px; }
+      .protocol-list .year-head .y-num { font-size: 36px; padding-left: 20px; }
+      .protocol-list .year-head .y-num::before { width: 12px; }
+      .protocol-list .year-head .y-rule { display: none; }
+      .protocol-list .year-head .y-tag { padding-left: 20px; }
+
       .protocol-list li.entry {
         grid-template-columns: 1fr;
-        gap: 6px;
-        padding-left: 8px;
+        gap: 12px;
+        padding: 22px 0;
       }
-      .protocol-list li.entry::before { left: -16px; top: 6px; }
-      .protocol-list li.entry.is-latest {
-        padding-left: 8px;
-        margin-left: -8px;
+      .entry__left { flex-direction: row; align-items: baseline; gap: 16px; }
+      .entry__num { font-size: 28px; padding-left: 20px; }
+      .entry__num::before { width: 12px; }
+      .entry__date { padding-left: 0; }
+      .entry__right {
+        grid-column: 1;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        text-align: left;
       }
-      .protocol-list li.entry.is-latest::before { left: -17px; }
-      .protocol-list .year-head {
-        margin-left: -16px;
-        padding-left: 16px;
-      }
-      .protocol-list .year-head::before { left: -1px; }
 
-      .entry__status { justify-self: start; margin-top: 0; }
+      .final-cta-inner { grid-template-columns: 1fr; gap: 24px; padding: 48px 20px; }
+      .final-cta__side { border-right: 0; border-bottom: 1px solid var(--line); padding: 0 0 16px; }
+
+      .to-top { right: 16px; bottom: 16px; width: 40px; height: 40px; }
+
+      .bg-panels .panel.p1,
+      .bg-panels .panel.p2,
+      .bg-panels .panel.p3,
+      .bg-diag { display: none; }
     }
 
-    @media (max-width: 520px) {
-      .hero-meta { grid-template-columns: 1fr; }
-      .section { padding: 56px 20px; }
-      .to-top { right: 16px; bottom: 16px; }
+    @media (max-width: 480px) {
+      .hero-actions .button { width: 100%; justify-content: space-between; }
+      .metric { grid-template-columns: 100px 1fr 34px; font-size: 9px; }
     }
 
-    /* ===== Печать ===== */
     @media print {
-      body::before, body::after { display: none; }
-      .site-header, .transmission, .final-cta__image,
-      .hero-image, .read-progress, .to-top, .nav-toggle { display: none !important; }
+      body::before, .read-progress, .to-top, .nav-toggle,
+      .bg-layer, .bg-rails, .bg-horizontals, .bg-panels,
+      .bg-crosses, .bg-rays, .bg-noise, .bg-diag, .bg-ticks { display: none !important; }
       body { background: #fff; color: #000; }
-      .hero::after, .final-cta::after { display: none; }
-      .hero-meta { border-color: #ccc; background: #ccc; }
-      .hero-meta > div { background: #fff; }
-      .section { border-bottom: 1px solid #ccc; }
-      .section::before, .section::after { display: none; }
+      .site-header { display: none; }
+      .final-cta { background: #fff; color: #000; }
+      .final-cta__text { color: #000; }
       a { color: #000; text-decoration: underline; }
-      .protocol-list a { border-bottom: 0; }
-      .redacted { background: #000; color: #000; box-shadow: none; }
+      .redacted { background: #000; color: #000; }
       .dossier-aside { display: none; }
-      .spoiler { border-color: #ccc; background: #fff; }
-      .spoiler summary { color: #000; }
-      .spoiler summary::before { border-color: #000; color: #000; background: none; }
-
-      .psych-card { border-color: #ccc; background: #fff; }
-      .psych-card > summary { color: #000; }
-      .psych-card > summary::before { border-color: #000; color: #000; background: none; }
-      .psych-card > summary .rec-dot,
-      .psych-card > summary .psych-card__hint { display: none; }
-      .psych-quote { border-left-color: #000; background: none; }
-
       .entry-tabs { display: none; }
-      .protocol-list .year-head { color: #000; border-color: #000; }
-      .protocol-list .year-head::before { background: #000; box-shadow: none; }
-      .protocol-list li.entry::before { background: #000; box-shadow: none; }
-      .protocol-list li.entry { border-color: #ccc; }
-      .entry-tag { color: #000; border-color: #000; }
-      .entry__status { color: #000; }
-      .protocol-list li.entry.is-latest { background: none; border-left: 0; }
+      .psych-card__body { display: block; }
+      .psych-card__body > div { margin-bottom: 20px; }
     }
   </style>
 
   <script defer>
     document.addEventListener('DOMContentLoaded', function () {
-
-      /* ===== Мобильное меню ===== */
       var toggle = document.querySelector('.nav-toggle');
       var nav = document.getElementById('site-nav');
-
       if (toggle && nav) {
         toggle.addEventListener('click', function () {
           var open = nav.classList.toggle('is-open');
           toggle.setAttribute('aria-expanded', String(open));
         });
-
         nav.addEventListener('click', function (e) {
           if (e.target.tagName === 'A') {
             nav.classList.remove('is-open');
@@ -948,7 +1224,6 @@
         });
       }
 
-      /* ===== Прогресс ===== */
       var progressBar = document.querySelector('.read-progress span');
       if (progressBar) {
         var updateProgress = function () {
@@ -962,23 +1237,17 @@
         updateProgress();
       }
 
-      /* ===== Наверх ===== */
       var toTop = document.querySelector('.to-top');
       if (toTop) {
         window.addEventListener('scroll', function () {
-          if (window.scrollY > 600) {
-            toTop.classList.add('is-visible');
-          } else {
-            toTop.classList.remove('is-visible');
-          }
+          if (window.scrollY > 600) toTop.classList.add('is-visible');
+          else toTop.classList.remove('is-visible');
         }, { passive: true });
-
         toTop.addEventListener('click', function () {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
 
-      /* ===== Навигация — активный пункт ===== */
       var navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
       var sections = [];
       navLinks.forEach(function (link) {
@@ -988,7 +1257,6 @@
           if (el) sections.push({ id: id, el: el, link: link });
         }
       });
-
       if (sections.length && 'IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -1000,17 +1268,13 @@
             }
           });
         }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
         sections.forEach(function (s) { observer.observe(s.el); });
       }
 
-      /* ===== Фоновая музыка ===== */
       var bgMusic = document.getElementById('bg-music');
       var musicStarted = false;
-
       if (bgMusic) {
-        bgMusic.volume = 0.05; // ← ГРОМКОСТЬ: 0.0 – 1.0
-
+        bgMusic.volume = 0.05;
         function startBgMusic() {
           if (musicStarted) return;
           bgMusic.play().then(function () {
@@ -1018,7 +1282,6 @@
             removeStartListeners();
           }).catch(function () {});
         }
-
         function removeStartListeners() {
           document.removeEventListener('click', startBgMusic);
           document.removeEventListener('keydown', startBgMusic);
@@ -1026,7 +1289,6 @@
           document.removeEventListener('touchstart', startBgMusic);
           document.removeEventListener('mousemove', startBgMusic);
         }
-
         document.addEventListener('click', startBgMusic);
         document.addEventListener('keydown', startBgMusic);
         document.addEventListener('scroll', startBgMusic);
@@ -1038,6 +1300,43 @@
 </head>
 
 <body data-page="dossier">
+
+  <!-- ФОН -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-diag"></div>
+    <div class="bg-rails">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="bg-ticks">
+      <span class="tick l" style="top: 14%;" data-num="A1"></span>
+      <span class="tick l" style="top: 32%;" data-num="A2"></span>
+      <span class="tick l" style="top: 58%;" data-num="A3"></span>
+      <span class="tick l" style="top: 82%;" data-num="A4"></span>
+      <span class="tick r" style="top: 20%;" data-num="B1"></span>
+      <span class="tick r" style="top: 46%;" data-num="B2"></span>
+      <span class="tick r" style="top: 72%;" data-num="B3"></span>
+      <span class="tick r" style="top: 90%;" data-num="B4"></span>
+    </div>
+    <div class="bg-horizontals">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="bg-panels">
+      <div class="panel p1"></div>
+      <div class="panel p2"></div>
+      <div class="panel p3"></div>
+      <div class="panel p4"></div>
+      <div class="panel p5"></div>
+      <div class="panel p6"></div>
+    </div>
+    <div class="bg-crosses">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="bg-rays">
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
   <a class="skip-link" href="#main">К содержанию</a>
 
   <div class="read-progress" aria-hidden="true"><span></span></div>
@@ -1045,7 +1344,8 @@
   <header class="site-header">
     <a class="brand" href="#main" aria-label="Личное дело — главная">
       <span class="brand-mark" aria-hidden="true"></span>
-      <span>ЛИЧНОЕ ДЕЛО</span>
+      <span>Личное дело</span>
+      <span class="brand-meta">// ARC-1783-IF-0432</span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
       <span></span><span></span>
@@ -1061,279 +1361,394 @@
   </header>
 
   <main id="main">
-    <!-- HERO -->
+    <!-- HERO — без паспорта -->
     <section class="hero">
       <img class="hero-image" src="hero.png" alt="" fetchpriority="high" decoding="async">
-      <div class="hero-content shell">
-        <p class="eyebrow"><span class="status-dot"></span> USAKUK-Site-03 // ГБР «Ранкор»</p>
-        <h1>РАЙАН<br><em>СОМЕРСЕТ</em></h1>
+
+      <div class="hero-topbar">
+        <span class="status-line"><span class="dot" aria-hidden="true"></span> USAKUK-SITE-03 // ГБР «РАНКОР»</span>
+        <span>ДОСЬЕ №1783-IF-0432 // РЕВ. 03</span>
+      </div>
+
+      <div class="hero-content">
+        <p class="eyebrow">// 01 — СОВЕРШЕННО СЕКРЕТНО · УРОВЕНЬ 3</p>
+        <h1>Райан<br><em>Сомерсет</em></h1>
         <p class="hero-lead">Личное дело оперативника «Аркейн». Специалист тактической группы «Ранкор», USAKUK-Site-03. Уровень допуска 3.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#biography">Открыть дело <span>→</span></a>
           <a class="button button-ghost" href="#chronicle">Хроника службы <span>→</span></a>
         </div>
       </div>
-      <div class="hero-meta shell" aria-label="Основные данные">
-        <div><span>Имя</span><strong>Рус. / Райан Сомерсет<br>Eng. / Ryan Somerset</strong></div>
-        <div><span>Кодовое имя</span><strong>Оперативник «Аркейн»</strong></div>
-        <div><span>Подразделение</span><strong>ГБР «Ранкор»</strong></div>
-        <div><span>Допуск</span><strong>Уровень 3</strong></div>
-        <div><span>Идентификационный номер</span><strong>1783-IF-0432</strong></div>
-        <div><span>Должность</span><strong>Специалист ГБР «Ранкор»</strong></div>
-        <div><span>Дата рождения</span><strong>06.11.2001 г.</strong></div>
-        <div><span>Место работы</span><strong>USAKUK-Site-03</strong></div>
+
+      <div class="hero-meta" aria-label="Основные данные">
+        <div data-idx="/01"><span>Имя</span><strong>РАЙАН СОМЕРСЕТ<br><em style="color:var(--ink-faint);font-style:normal;font-size:11px;">RYAN SOMERSET</em></strong></div>
+        <div data-idx="/02"><span>Кодовое имя</span><strong>ОПЕРАТИВНИК «АРКЕЙН»</strong></div>
+        <div data-idx="/03"><span>Подразделение</span><strong>ГБР «РАНКОР»</strong></div>
+        <div data-idx="/04"><span>Допуск</span><strong>УРОВЕНЬ 3</strong></div>
+        <div data-idx="/05"><span>ID</span><strong>1783-IF-0432</strong></div>
+        <div data-idx="/06"><span>Должность</span><strong>СПЕЦИАЛИСТ ГБР</strong></div>
+        <div data-idx="/07"><span>Дата рождения</span><strong>06.11.2001</strong></div>
+        <div data-idx="/08"><span>Место работы</span><strong>USAKUK-SITE-03</strong></div>
       </div>
     </section>
 
     <!-- УВЕДОМЛЕНИЕ -->
     <aside class="transmission" aria-label="Системное уведомление">
-      <div class="shell transmission-inner">
-        <span class="transmission-label">⚠ Доступ 4 уровня</span>
+      <div class="transmission-inner">
+        <span class="transmission-label">ДОСТУП 4 УРОВНЯ</span>
         <p>Доступ к содержанию документации предоставлен исключительно сотрудникам с 4 уровнем допуска и/или по принципу служебной необходимости. Дальнейший просмотр без требуемого допуска карается санкционными мерами, вплоть до увольнения со службы. При случайном доступе — прекратите чтение и доложите руководителю или сотруднику АПАИБ.</p>
+        <span class="transmission-code">[REF: A-3.1]</span>
       </div>
     </aside>
 
     <!-- БИОГРАФИЯ -->
-    <section class="section shell situation" id="biography">
-      <div class="section-heading">
-        <p class="section-code">01 // Содержание</p>
-        <h2>Биография</h2>
-      </div>
-
-      <div class="bio-layout">
-        <div class="situation-copy">
-          <p class="lead">Райан Сомерсет родился в городе Колумбус, штат Огайо. Его мать работала медсестрой в местном госпитале, а отец был офицером Полицейского Управления Колумбуса (Columbus Police Department). Ещё в детстве, вдохновляясь рассказами отца, Райан решил стать хранителем правопорядка.</p>
-          <p>С детства Райан проявлял физическую активность, усердно занимаясь спортом, чтобы подготовить себя к будущей профессии. Отец часто брал его с собой на стрельбище, где Райан обучался навыкам обращения с оружием, стреляя по мишеням и жестяным банкам. Также они регулярно выбирались на охоту за город — в основном в лесистые районы штата. Эти моменты оставили для Райана важный след в его памяти и сердце.</p>
-
-          <details class="spoiler">
-            <summary>
-              <span class="rec-dot" aria-hidden="true"></span>
-              <span>13.09.2016 — запись звонка 911</span>
-            </summary>
-            <p>13.09.2016 года в 15:43 в диспетчерскую службы спасения 911 поступил звонок от Райана Сомерсета. Подросток утверждал, что убил своих родителей, в его голосе слышалась дрожь. Диспетчер направил два патрульных наряда. Прибывшие офицеры <span class="redacted" title="Данные изъяты">█████</span> и <span class="redacted" title="Данные изъяты">█████</span> вскрыли дверь и проникли внутрь дома. Внутри их встретила ужасающая картина: большая часть комнат была залита кровью, а сам Райан сидел, забившись в угол, и в истерике повторял, что убил их. В 22:11 прибыли агенты Федерального Бюро Расследования в составе четырёх человек, включая одного агента Отдела Необычных Происшествий. Останков тел обнаружено не было — лишь кровавые следы на стенах и потолке. Анализ крови подтвердил, что ДНК принадлежат родителям Райана.</p>
-          </details>
-
-          <p>Инцидент не получил огласку из-за вмешательства <span class="term" title="Глобальная Оккультная Коалиция">Глобальной Оккультной Коалиции</span>. Расследование установило, что Райан стал жертвой неконтролируемого выброса тауматургии, вызванного отдачей несанкционированного оккультизма, что и привело к трагедии. После оказания необходимой психологической помощи его передали под опеку профессора Джозефа Шейнера IV, преподавателя кампуса <span class="term" title="Международный центр изучения единой тауматологии">ICSUT</span> в Нью-Йорке.</p>
-          <p>Спустя <span class="redacted" title="Данные изъяты">██</span> месяцев наблюдения и стабилизации психологического состояния Райана, ему организовали досрочное поступление в ICSUT. В стенах академии он начал изучение особых дисциплин, специализируясь на прикладной тауматургии и не только. Профессора отметили его необыкновенный талант, который позволил подростку быстро прогрессировать в освоении магических практик. Во время обучения в кампусе, в рамках договора о сотрудничестве между ICSUT, ГОК и SCP Фондом, агенты Отдела Внешних Связей Фонда проводили работу с перспективными студентами. Райана заинтересовала основная идеология организации: вместо уничтожения аномального (Практика ГОК), Фонд предлагает сокрытие, контроль и поддержание нормальности для защиты общества. Это видение оказалось созвучно его детской мечте стать защитником правопорядка, и он дал согласие на сотрудничество.</p>
-          <p>По окончании обучения Райан получил предложения о работе от нескольких государственных организаций, в число которых входят: «Глобальная Оккультная Коалиция», «PENTAGRAM», «Отдел Необычных Происшествий» и сам «SCP FOUNDATION». Уже заинтересованный в идеологии организации SCP, он поступил на должность профессора в Фонд, получив назначение в Зону 300-14.</p>
+    <section class="section" id="biography">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 01. БИОГРАФИЯ</p>
+          <h2>Корни и<br>становление</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">FILE</span><span class="v">1783-IF-0432</span></div>
+            <div class="row"><span class="k">SEC</span><span class="v">L-3 / EYES</span></div>
+            <div class="row"><span class="k">PAGES</span><span class="v">01 / 04</span></div>
+          </div>
         </div>
 
-        <aside class="dossier-aside" aria-label="Сводка оперативника">
-          <div class="dossier-card">
-            <p class="dossier-card__title">
-              <span>// Фото 3×4</span>
-              <span>ID 1783-IF-0432</span>
-            </p>
-            <div class="dossier-photo">
-              <span class="dossier-photo__tag">CLASSIFIED</span>
-              <img class="dossier-photo__img" src="avatar.jpg" alt="Фото оперативника «Аркейн»">
+        <div class="bio-layout">
+          <div class="situation-copy">
+            <p class="lead">Райан Сомерсет родился в городе Колумбус, штат Огайо. Его мать работала медсестрой в местном госпитале, а отец был офицером Полицейского Управления Колумбуса. Ещё в детстве, вдохновляясь рассказами отца, Райан решил стать хранителем правопорядка.</p>
+            <p>С детства Райан проявлял физическую активность, усердно занимаясь спортом, чтобы подготовить себя к будущей профессии. Отец часто брал его с собой на стрельбище, где Райан обучался навыкам обращения с оружием, стреляя по мишеням и жестяным банкам. Также они регулярно выбирались на охоту за город — в основном в лесистые районы штата. Эти моменты оставили для Райана важный след в его памяти и сердце.</p>
+
+            <details class="spoiler">
+              <summary>
+                <span class="rec-dot" aria-hidden="true"></span>
+                <span>13.09.2016 — ЗАПИСЬ ЗВОНКА 911</span>
+                <span class="tag-end">// ИЗЪЯТО</span>
+              </summary>
+              <p>13.09.2016 года в 15:43 в диспетчерскую службы спасения 911 поступил звонок от Райана Сомерсета. Подросток утверждал, что убил своих родителей, в его голосе слышалась дрожь. Диспетчер направил два патрульных наряда. Прибывшие офицеры <span class="redacted" title="Данные изъяты">█████</span> и <span class="redacted" title="Данные изъяты">█████</span> вскрыли дверь и проникли внутрь дома. Внутри их встретила ужасающая картина: большая часть комнат была залита кровью, а сам Райан сидел, забившись в угол, и в истерике повторял, что убил их. В 22:11 прибыли агенты Федерального Бюро Расследования в составе четырёх человек, включая одного агента Отдела Необычных Происшествий. Останков тел обнаружено не было — лишь кровавые следы на стенах и потолке. Анализ крови подтвердил, что ДНК принадлежат родителям Райана.</p>
+            </details>
+
+            <p>Инцидент не получил огласку из-за вмешательства <span class="term" title="Глобальная Оккультная Коалиция">Глобальной Оккультной Коалиции</span>. Расследование установило, что Райан стал жертвой неконтролируемого выброса тауматургии, вызванного отдачей несанкционированного оккультизма, что и привело к трагедии. После оказания необходимой психологической помощи его передали под опеку профессора Джозефа Шейнера IV, преподавателя кампуса <span class="term" title="Международный центр изучения единой тауматологии">ICSUT</span> в Нью-Йорке.</p>
+            <p>Спустя <span class="redacted" title="Данные изъяты">██</span> месяцев наблюдения и стабилизации психологического состояния Райана, ему организовали досрочное поступление в ICSUT. В стенах академии он начал изучение особых дисциплин, специализируясь на прикладной тауматургии и не только. Профессора отметили его необыкновенный талант, который позволил подростку быстро прогрессировать в освоении магических практик. Во время обучения в кампусе, в рамках договора о сотрудничестве между ICSUT, ГОК и SCP Фондом, агенты Отдела Внешних Связей Фонда проводили работу с перспективными студентами. Райана заинтересовала основная идеология организации: вместо уничтожения аномального (Практика ГОК), Фонд предлагает сокрытие, контроль и поддержание нормальности для защиты общества. Это видение оказалось созвучно его детской мечте стать защитником правопорядка, и он дал согласие на сотрудничество.</p>
+            <p>По окончании обучения Райан получил предложения о работе от нескольких государственных организаций, в число которых входят: «Глобальная Оккультная Коалиция», «PENTAGRAM», «Отдел Необычных Происшествий» и сам «SCP FOUNDATION». Уже заинтересованный в идеологии организации SCP, он поступил на должность профессора в Фонд, получив назначение в Зону 300-14.</p>
+          </div>
+
+          <aside class="dossier-aside" aria-label="Сводка оперативника">
+            <div class="dossier-card">
+              <p class="dossier-card__title">
+                <span>// ФОТО</span>
+                <span>ID 1783</span>
+              </p>
+              <div class="dossier-photo">
+                <span class="dossier-photo__tag">CLASSIFIED</span>
+                <img class="dossier-photo__img" src="avatar.jpg" alt="Фото оперативника «Аркейн»">
+              </div>
+              <dl style="margin:0;">
+                <div class="dossier-row"><dt>Статус</dt><dd>Активен</dd></div>
+                <div class="dossier-row"><dt>Допуск</dt><dd>Ур. 3</dd></div>
+                <div class="dossier-row"><dt>Позывной</dt><dd>Аркейн</dd></div>
+              </dl>
             </div>
-            <dl style="margin:0;">
-              <div class="dossier-row"><dt>Статус</dt><dd>Активен</dd></div>
-              <div class="dossier-row"><dt>Допуск</dt><dd>Ур. 3</dd></div>
-              <div class="dossier-row"><dt>Позывной</dt><dd>Аркейн</dd></div>
-            </dl>
-          </div>
 
-          <div class="dossier-card">
-            <p class="dossier-card__title"><span>// Сводка</span></p>
-            <dl style="margin:0;">
-              <div class="dossier-row"><dt>Возраст</dt><dd>24 года</dd></div>
-              <div class="dossier-row"><dt>Рост</dt><dd>185 см</dd></div>
-              <div class="dossier-row"><dt>Группа крови</dt><dd>II (A) Rh+</dd></div>
-              <div class="dossier-row"><dt>Специализация</dt><dd>Прикл. тауматургия</dd></div>
-              <div class="dossier-row"><dt>Стаж</dt><dd>с 2021 г.</dd></div>
-            </dl>
-          </div>
+            <div class="dossier-card">
+              <p class="dossier-card__title"><span>// СВОДКА</span><span>S.01</span></p>
+              <dl style="margin:0;">
+                <div class="dossier-row"><dt>Возраст</dt><dd>24 года</dd></div>
+                <div class="dossier-row"><dt>Рост</dt><dd>185 см</dd></div>
+                <div class="dossier-row"><dt>Группа крови</dt><dd>II (A) Rh+</dd></div>
+                <div class="dossier-row"><dt>Специализация</dt><dd>Прикл. тауматургия</dd></div>
+                <div class="dossier-row"><dt>Стаж</dt><dd>с 2021 г.</dd></div>
+              </dl>
+            </div>
 
-          <div class="dossier-status">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span>На службе · Site-03</span>
-          </div>
-        </aside>
+            <div class="dossier-status">
+              <span class="dot" aria-hidden="true"></span>
+              <span>НА СЛУЖБЕ · SITE-03</span>
+            </div>
+          </aside>
+        </div>
       </div>
     </section>
 
     <!-- ПСИХОПРОФИЛЬ -->
-    <section class="psych-section shell" id="psych" aria-labelledby="psych-title">
-      <div class="section-heading">
-        <p class="section-code">02 // Психологический профиль</p>
-        <h2 id="psych-title">Оценка личности</h2>
-      </div>
-
-      <details class="psych-card" open>
-        <summary>
-          <span class="rec-dot" aria-hidden="true"></span>
-          <span>Результаты психологической оценки — Q3 2026</span>
-          <span class="psych-card__hint" aria-hidden="true"></span>
-        </summary>
-
-        <div class="psych-card__body">
-          <div>
-            <p class="psych-sub">Психофизиологические метрики</p>
-            <div class="psych-metrics">
-              <div class="dossier-row"><dt>PRS</dt><dd>7.4 / 10</dd></div>
-              <div class="dossier-row"><dt>CRV</dt><dd>6.9 / 10</dd></div>
-              <div class="dossier-row"><dt>Gunners</dt><dd>8.1 / 10</dd></div>
-              <div class="dossier-row"><dt>MARS</dt><dd>7.0 / 10</dd></div>
-              <div class="dossier-row"><dt>Thaum. attune</dt><dd>9.2 / 10</dd></div>
-              <div class="dossier-row"><dt>Baseline anchor</dt><dd>0.87</dd></div>
-              <div class="dossier-row"><dt>Последний тест</dt><dd>██.██.2026</dd></div>
-              <div class="dossier-row"><dt>Заключение</dt><dd class="ok">Годен</dd></div>
-            </div>
+    <section class="psych-section" id="psych" aria-labelledby="psych-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 02. ПСИХОПРОФИЛЬ</p>
+          <h2 id="psych-title">Оценка<br>личности</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">TEST</span><span class="v">Q3 / 2026</span></div>
+            <div class="row"><span class="k">DR</span><span class="v">██████ / P-03</span></div>
+            <div class="row"><span class="k">RES</span><span class="v">PASS</span></div>
           </div>
-
-          <div>
-            <p class="psych-sub">Сильные стороны</p>
-            <div class="psych-tags psych-tags--strong">
-              <span>Стрессоустойчив</span>
-              <span>Обучаем</span>
-              <span>Хладнокровен</span>
-              <span>Командная работа</span>
-            </div>
-
-            <p class="psych-sub" style="margin-top:20px;">Триггерные зоны</p>
-            <div class="psych-tags psych-tags--weak">
-              <span>Самоизоляция</span>
-              <span>Контроль</span>
-              <span>Не делегирует</span>
-              <span>Инцидент 2016</span>
-            </div>
-          </div>
-
-          <blockquote class="psych-quote">
-            <p>«Психически устойчив. Психотравма 2016 года компенсирована, однако остаётся триггерной зоной. Рекомендовано: продолжать проходить ежемесячные сессии психотерапии.»</p>
-            <cite>— д-р ██████, психологический отдел, Зона-03</cite>
-          </blockquote>
         </div>
-      </details>
-    </section>
 
-    <!-- ХРЕНОЛОГИЯ ХУЛИ -->
-    <section class="section shell chronicle" id="chronicle">
-      <div class="section-heading">
-        <p class="section-code">03 // Хроника оперативно-служебной деятельности</p>
-        <h2>Хронология</h2>
+        <details class="psych-card" open>
+          <summary>
+            <span class="rec-dot" aria-hidden="true"></span>
+            <span>РЕЗУЛЬТАТЫ ПСИХОЛОГИЧЕСКОЙ ОЦЕНКИ — Q3 2026</span>
+            <span class="psych-card__hint" aria-hidden="true"></span>
+          </summary>
+
+          <div class="psych-card__body">
+            <div>
+              <p class="psych-sub">МЕТРИКИ</p>
+              <div class="metric-list">
+                <div class="metric"><span class="name">PRS</span><span class="bar"><span style="width:74%;"></span></span><span class="val">7.4</span></div>
+                <div class="metric"><span class="name">CRV</span><span class="bar"><span style="width:69%;"></span></span><span class="val">6.9</span></div>
+                <div class="metric"><span class="name">Gunners</span><span class="bar"><span style="width:81%;"></span></span><span class="val">8.1</span></div>
+                <div class="metric"><span class="name">MARS</span><span class="bar"><span style="width:70%;"></span></span><span class="val">7.0</span></div>
+                <div class="metric"><span class="name">Thaum.</span><span class="bar"><span style="width:92%;"></span></span><span class="val">9.2</span></div>
+                <div class="metric"><span class="name">Baseline</span><span class="bar"><span style="width:87%;"></span></span><span class="val">0.87</span></div>
+              </div>
+            </div>
+
+            <div>
+              <p class="psych-sub">СИЛЬНЫЕ СТОРОНЫ</p>
+              <div class="psych-tags psych-tags--strong" style="margin-bottom:24px;">
+                <span>Стрессоустойчив</span>
+                <span>Обучаем</span>
+                <span>Хладнокровен</span>
+                <span>Командная работа</span>
+              </div>
+
+              <p class="psych-sub">ТРИГГЕРНЫЕ ЗОНЫ</p>
+              <div class="psych-tags psych-tags--weak">
+                <span>Самоизоляция</span>
+                <span>Контроль</span>
+                <span>Не делегирует</span>
+                <span>Инцидент 2016</span>
+              </div>
+            </div>
+
+            <div class="psych-verdict">
+              <div class="verdict-box"><span class="k">ЗАКЛЮЧЕНИЕ</span><span class="v ok">ГОДЕН</span></div>
+              <div class="verdict-box"><span class="k">СЛЕД. ТЕСТ</span><span class="v">Q4 / 2026</span></div>
+              <div class="verdict-box"><span class="k">РЕКОМЕНДАЦИИ</span><span class="v" style="font-size:11px;letter-spacing:.1em;">ЕЖЕМЕС. СЕССИИ</span></div>
+            </div>
+
+            <blockquote class="psych-quote">
+              <p>Психически устойчив. Психотравма 2016 года компенсирована, однако остаётся триггерной зоной. Рекомендовано: продолжать проходить ежемесячные сессии психотерапии.</p>
+              <cite>— д-р ██████, психологический отдел, Зона-03</cite>
+            </blockquote>
+          </div>
+        </details>
       </div>
-
-      <ol class="protocol-list">
-
-        <!-- 2021 // спокойное время -->
-        <li class="year-head" aria-hidden="true"><span>2021</span></li>
-
-        <li class="entry" data-type="move">
-          <span class="entry__date">21.01.2021</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--move">Назначение</p>
-            <p>Становление на должность профессора по оккультным наукам в организации.</p>
-          </div>
-        </li>
-
-        <!-- 2022 // пиздец... что началось то -->
-        <li class="year-head" aria-hidden="true"><span>2022</span></li>
-
-        <li class="entry" data-type="move">
-          <span class="entry__date">15.07.2022</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--move">Перевод</p>
-            <p>Межхабовый перевод из Зоны-300-14 в Зону-300-12, участие в разработках передовых оккультных технологий.</p>
-          </div>
-        </li>
-
-        <li class="entry" data-type="op">
-          <span class="entry__date">03.08.2022</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--op">Операция</p>
-            <p>Участие в сдерживании последствий паратехнологий фонда, на территории Антарктиды.</p>
-          </div>
-        </li>
-
-        <!-- 2023 -->
-        <li class="year-head" aria-hidden="true"><span>2023</span></li>
-
-        <li class="entry" data-type="move">
-          <span class="entry__date">09.04.2023</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--move">Перевод</p>
-            <p>Перевод в МОГ Бета-777 «Копьё Гекаты», прохождение обучения и подготовки.</p>
-          </div>
-        </li>
-
-        <li class="entry" data-type="op">
-          <span class="entry__date">23.12.2023</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--op">Операция</p>
-            <p>Участие в сдерживании и подавлении оккультного ритуала в <span class="redacted" title="Данные изъяты">███████</span>, Западная Сибирь, РФ. <a href="operation_sleeping_echo.html" target="_blank" rel="noopener">Отчёт →</a></p>
-          </div>
-        </li>
-
-        <!-- 2024 // Мир сошёл с ума... за что ютуб то? -->
-        <li class="year-head" aria-hidden="true"><span>2024</span></li>
-
-        <li class="entry" data-type="req">
-          <span class="entry__date">09.02.2024</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--req">Запрос · перевод</p>
-            <p>Запрос о переводе в Зону-19 и службе в ней.</p>
-          </div>
-          <span class="entry__status entry__status--no">Отказ</span>
-        </li>
-
-        <li class="entry" data-type="req">
-          <span class="entry__date">13.05.2024</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--req">Запрос · перевод</p>
-            <p>Запрос о переводе в Зону-03 и службе в ней.</p>
-          </div>
-          <span class="entry__status entry__status--ok">Одобрен</span>
-        </li>
-
-        <li class="entry" data-type="move">
-          <span class="entry__date">19.06.2024</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--move">Перевод</p>
-            <p>Перевод из Зоны-91 в Зону 03. Вступление в состав тактической группы «Ранкор».</p>
-          </div>
-        </li>
-
-        <li class="entry" data-type="req">
-          <span class="entry__date">26.12.2024</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--req">Запрос · позывной</p>
-            <p>Запрос на смену позывного с «Тихоня» на «Аркейн», на имя лейтенанта ГБР «Ранкор».</p>
-          </div>
-          <span class="entry__status entry__status--ok">Одобрен</span>
-        </li>
-
-        <!-- 2026 // В Ы Ж И Т Ь  В  П И З Д Е Ц Е -->
-        <li class="year-head" aria-hidden="true"><span>2026</span></li>
-
-        <li class="entry" data-type="train">
-          <span class="entry__date">04.02.2026</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--train">Обучение</p>
-            <p>Прохождение обучения с системами C.A.S.S.I.E. Получение звания специалиста по работе с автономными системами.</p>
-          </div>
-        </li>
-
-        <li class="entry is-latest" data-type="op">
-          <span class="entry__date">30.07.2026</span>
-          <div class="entry__body">
-            <p class="entry-tag entry-tag--op"><span class="status-dot" aria-hidden="true"></span> Операция · актуально</p>
-            <p>Участие в операции по сдерживанию ЧС в Зоне 03 — инцидент S-03-GOI-CI-3.</p>
-          </div>
-        </li>
-
-      </ol>
     </section>
 
-    <!-- КОНЕЦ, я ебал... ии мои текста все перекошмарил, вайбкодер сука... -->
+    <!-- ХРОНОЛОГИЯ — без дублирующих заголовков -->
+    <section class="section chronicle" id="chronicle">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="section-code">// 03. ХРОНИКА</p>
+          <h2>Оперативно-<br>служебная<br>деятельность</h2>
+          <div class="section-tech" aria-hidden="true">
+            <div class="row"><span class="k">SPAN</span><span class="v">2021 — 2026</span></div>
+            <div class="row"><span class="k">ENTRIES</span><span class="v">12</span></div>
+            <div class="row"><span class="k">STATUS</span><span class="v">ACTIVE</span></div>
+          </div>
+        </div>
+
+        <ol class="protocol-list">
+
+          <li class="year-head" aria-hidden="true">
+            <span class="y-num">2021</span>
+            <span class="y-rule"></span>
+            <span class="y-tag">// НАЗНАЧЕНИЕ</span>
+          </li>
+
+          <li class="entry" data-type="move">
+            <div class="entry__left">
+              <span class="entry__num"><span>1</span></span>
+              <span class="entry__date">21.01.2021</span>
+            </div>
+            <div class="entry__body">
+              <p>Становление на должность профессора по оккультным наукам в организации.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--move">НАЗНАЧЕНИЕ</span>
+            </div>
+          </li>
+
+          <li class="year-head" aria-hidden="true">
+            <span class="y-num">2022</span>
+            <span class="y-rule"></span>
+            <span class="y-tag">// ПОЛЕВАЯ РАБОТА</span>
+          </li>
+
+          <li class="entry" data-type="move">
+            <div class="entry__left">
+              <span class="entry__num"><span>2</span></span>
+              <span class="entry__date">15.07.2022</span>
+            </div>
+            <div class="entry__body">
+              <p>Межхабовый перевод из Зоны-300-14 в Зону-300-12, участие в разработках передовых оккультных технологий.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--move">ПЕРЕВОД</span>
+            </div>
+          </li>
+
+          <li class="entry" data-type="op">
+            <div class="entry__left">
+              <span class="entry__num"><span>3</span></span>
+              <span class="entry__date">03.08.2022</span>
+            </div>
+            <div class="entry__body">
+              <p>Участие в сдерживании последствий паратехнологий фонда, на территории Антарктиды.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--op">ОПЕРАЦИЯ</span>
+            </div>
+          </li>
+
+          <li class="year-head" aria-hidden="true">
+            <span class="y-num">2023</span>
+            <span class="y-rule"></span>
+            <span class="y-tag">// МОГ «КОПЬЁ ГЕКАТЫ»</span>
+          </li>
+
+          <li class="entry" data-type="move">
+            <div class="entry__left">
+              <span class="entry__num"><span>4</span></span>
+              <span class="entry__date">09.04.2023</span>
+            </div>
+            <div class="entry__body">
+              <p>Перевод в МОГ Бета-777 «Копьё Гекаты», прохождение обучения и подготовки.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--move">ПЕРЕВОД</span>
+            </div>
+          </li>
+
+          <li class="entry" data-type="op">
+            <div class="entry__left">
+              <span class="entry__num"><span>5</span></span>
+              <span class="entry__date">23.12.2023</span>
+            </div>
+            <div class="entry__body">
+              <p>Участие в сдерживании и подавлении оккультного ритуала в <span class="redacted" title="Данные изъяты">███████</span>, Западная Сибирь, РФ.</p>
+              <a href="operation_sleeping_echo.html" target="_blank" rel="noopener">Отчёт →</a>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--op">ОПЕРАЦИЯ</span>
+            </div>
+          </li>
+
+          <li class="year-head" aria-hidden="true">
+            <span class="y-num">2024</span>
+            <span class="y-rule"></span>
+            <span class="y-tag">// СМЕНА ПОДРАЗДЕЛЕНИЯ</span>
+          </li>
+
+          <li class="entry" data-type="req">
+            <div class="entry__left">
+              <span class="entry__num"><span>6</span></span>
+              <span class="entry__date">09.02.2024</span>
+            </div>
+            <div class="entry__body">
+              <p>Запрос о переводе в Зону-19 и службе в ней.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--req">ЗАПРОС</span>
+              <span class="entry__status entry__status--no">ОТКАЗ</span>
+            </div>
+          </li>
+
+          <li class="entry" data-type="req">
+            <div class="entry__left">
+              <span class="entry__num"><span>7</span></span>
+              <span class="entry__date">13.05.2024</span>
+            </div>
+            <div class="entry__body">
+              <p>Запрос о переводе в Зону-03 и службе в ней.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--req">ЗАПРОС</span>
+              <span class="entry__status entry__status--ok">ОДОБРЕН</span>
+            </div>
+          </li>
+
+          <li class="entry" data-type="move">
+            <div class="entry__left">
+              <span class="entry__num"><span>8</span></span>
+              <span class="entry__date">19.06.2024</span>
+            </div>
+            <div class="entry__body">
+              <p>Перевод из Зоны-91 в Зону 03. Вступление в состав тактической группы «Ранкор».</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--move">ПЕРЕВОД</span>
+            </div>
+          </li>
+
+          <li class="entry" data-type="req">
+            <div class="entry__left">
+              <span class="entry__num"><span>9</span></span>
+              <span class="entry__date">26.12.2024</span>
+            </div>
+            <div class="entry__body">
+              <p>Запрос на смену позывного с «Тихоня» на «Аркейн», на имя лейтенанта ГБР «Ранкор».</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--req">ЗАПРОС</span>
+              <span class="entry__status entry__status--ok">ОДОБРЕН</span>
+            </div>
+          </li>
+
+          <li class="year-head" aria-hidden="true">
+            <span class="y-num">2026</span>
+            <span class="y-rule"></span>
+            <span class="y-tag">// АКТУАЛЬНЫЕ ОПЕРАЦИИ</span>
+          </li>
+
+          <li class="entry" data-type="train">
+            <div class="entry__left">
+              <span class="entry__num"><span>10</span></span>
+              <span class="entry__date">04.02.2026</span>
+            </div>
+            <div class="entry__body">
+              <p>Прохождение обучения с системами C.A.S.S.I.E. Получение звания специалиста по работе с автономными системами.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--train">ОБУЧЕНИЕ</span>
+            </div>
+          </li>
+
+          <li class="entry is-latest" data-type="op">
+            <div class="entry__left">
+              <span class="entry__num"><span>11</span></span>
+              <span class="entry__date">30.07.2026</span>
+            </div>
+            <div class="entry__body">
+              <p>Участие в операции по сдерживанию ЧС в Зоне 03 — инцидент S-03-GOI-CI-3.</p>
+            </div>
+            <div class="entry__right">
+              <span class="entry-tag entry-tag--op">ОПЕРАЦИЯ</span>
+              <span class="entry__status entry__status--ok">АКТУАЛЬНО</span>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ФИНАЛ -->
     <section class="final-cta">
-      <img class="final-cta__image" src="down.jpg" alt="" loading="lazy" decoding="async">
-      <div class="shell final-cta-inner">
-        <p class="section-code">Личное дело // Аркейн</p>
-        <p class="final-cta__text">Данное Личное Дело писалось автором (@dyrgue). Если вы заметили несостыковки или же ошибки, неважно где, будто в оформлении или в лоре то пишите мне (в ДС).</p>
-        <p class="final-cta__text">На сайте играет фоновая музыка... зачильтесь</p>
+      <div class="final-cta-inner">
+        <aside class="final-cta__side" aria-hidden="true">
+          <div><span class="k">FILE //</span> <span class="v">1783-IF-0432</span></div>
+          <div><span class="k">REV //</span> <span class="v">03</span></div>
+          <div><span class="k">DATE //</span> <span class="v">2026.08</span></div>
+          <div><span class="k">AUTH //</span> <span class="v">@DYRGUE</span></div>
+          <div><span class="k">CLR //</span> <span class="v">LEVEL-3</span></div>
+          <div><span class="k">EOF //</span> <span class="v">■</span></div>
+        </aside>
+
+        <div>
+          <p class="final-cta__text">Данное Личное Дело писалось автором (@dyrgue). Если вы заметили несостыковки или же ошибки, неважно где, будто в оформлении или в лоре — пишите мне (в ДС).</p>
+          <p class="final-cta__text">На сайте играет фоновая музыка... зачильтесь.</p>
+        </div>
       </div>
     </section>
   </main>
