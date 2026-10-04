@@ -13,9 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* =========================================================
-       ПЕРЕМЕННЫЕ
-       ========================================================= */
     :root {
       --bg: #050505;
       --bg-soft: #0a0a0a;
@@ -55,22 +52,27 @@
     }
 
     /* =========================================================
-       МНОГОСЛОЙНЫЙ ФОН
+       ФОН — упрощён для производительности
        ========================================================= */
     .bg-layer {
       position: fixed; inset: 0;
       pointer-events: none; z-index: 0;
       overflow: hidden;
+      contain: strict;
     }
+
+    /* Один слой с точками + маска (единственная маска на странице) */
     .bg-layer::before {
       content: "";
       position: absolute; inset: 0;
       background-image: radial-gradient(circle, rgba(255,255,255,.045) 1px, transparent 1px);
       background-size: 22px 22px;
       opacity: .55;
-      mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
       -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
+      mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 90%);
     }
+
+    /* Сетка — без маски, просто градиент прозрачности через opacity */
     .bg-layer::after {
       content: "";
       position: absolute; inset: 0;
@@ -78,9 +80,10 @@
         linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
       background-size: 90px 90px;
-      mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
-      -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 35%, transparent 95%);
+      opacity: .6;
     }
+
+    /* Диагональ — без маски, ограничена размером */
     .bg-diag {
       position: absolute; inset: 0;
       background-image: repeating-linear-gradient(
@@ -88,10 +91,9 @@
         rgba(255,255,255,.018) 0 1px,
         transparent 1px 22px
       );
-      opacity: .6;
-      mask-image: radial-gradient(ellipse at 30% 60%, #000 20%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse at 30% 60%, #000 20%, transparent 70%);
+      opacity: .5;
     }
+
     .bg-rails { position: absolute; inset: 0; }
     .bg-rails span {
       position: absolute; top: 0; bottom: 0;
@@ -270,14 +272,15 @@
     .corners::after  { bottom: -1px; right: -1px; border-width: 0 1px 1px 0; }
 
     /* =========================================================
-       ШАПКА
+       ШАПКА — единственный backdrop-filter на странице
        ========================================================= */
     .site-header {
       position: sticky; top: 0; z-index: 40;
       display: flex; align-items: center; justify-content: space-between;
       gap: 24px; padding: 14px 48px;
-      background: rgba(5,5,5,.72);
-      backdrop-filter: blur(14px);
+      background: rgba(5,5,5,.85);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--line);
       font-family: var(--mono);
     }
@@ -313,7 +316,7 @@
       display: block; height: 100%; width: 0;
       background: var(--accent);
       transition: width .08s linear;
-      box-shadow: 0 0 12px rgba(255,255,255,.5);
+      /* Убрана box-shadow свечения */
     }
 
     .to-top {
@@ -357,12 +360,17 @@
     .hero-topbar .status-line { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
     .hero-topbar .status-line .dot {
       width: 6px; height: 6px; background: var(--alert);
-      border-radius: 50%; box-shadow: 0 0 8px var(--alert);
-      animation: blink 2s ease-in-out infinite;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+      will-change: opacity, transform;
     }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
 
-    /* Hero — одноколоночный теперь */
+    /* Общая анимация — только opacity + transform (GPU) */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .35; transform: scale(.85); }
+    }
+
     .hero-content {
       position: relative; z-index: 3;
       padding: 96px 48px 100px;
@@ -374,14 +382,14 @@
     }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 44px; }
 
+    /* Убран backdrop-filter */
     .hero-meta {
       position: relative; z-index: 3;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       border-top: 1px solid var(--line-mid);
       border-bottom: 1px solid var(--line-mid);
-      background: rgba(5,5,5,.4);
-      backdrop-filter: blur(4px);
+      background: rgba(5,5,5,.75);
     }
     .hero-meta > div {
       padding: 22px 24px;
@@ -417,24 +425,13 @@
       border: 1px solid var(--line-strong);
       font-family: var(--mono); font-size: 10px;
       letter-spacing: .22em; text-transform: uppercase;
-      transition: all .2s; cursor: pointer;
+      transition: background .2s, color .2s, border-color .2s;
+      cursor: pointer;
       background: transparent; color: var(--ink);
       position: relative;
     }
-    .button::before {
-      content: ""; position: absolute;
-      left: -1px; top: -1px; width: 6px; height: 6px;
-      border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
-      opacity: 0; transition: opacity .2s;
-    }
-    .button::after {
-      content: ""; position: absolute;
-      right: -1px; bottom: -1px; width: 6px; height: 6px;
-      border-bottom: 1px solid var(--ink); border-right: 1px solid var(--ink);
-      opacity: 0; transition: opacity .2s;
-    }
-    .button:hover::before, .button:hover::after { opacity: 1; }
-    .button span { transition: transform .2s; }
+    .button:hover { border-color: var(--ink); }
+    .button span { transition: transform .2s; display: inline-block; }
     .button:hover span { transform: translateX(4px); }
     .button-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
     .button-primary:hover { background: var(--bg); color: var(--ink); }
@@ -469,9 +466,16 @@
     .transmission .transmission-code { color: var(--ink-faint); font-size: 10px; letter-spacing: .25em; }
 
     /* =========================================================
-       СЕКЦИИ
+       СЕКЦИИ — с content-visibility для оптимизации рендера
        ========================================================= */
-    .section { padding: 96px 0; border-bottom: 1px solid var(--line); position: relative; }
+    .section {
+      padding: 96px 0;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      /* Браузер пропускает рендер секции, пока она вне вьюпорта */
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 1200px;
+    }
 
     .section-heading {
       display: grid;
@@ -556,14 +560,15 @@
       display: inline-flex; align-items: center; justify-content: center;
       border: 1px solid var(--accent); color: var(--accent);
       font-family: var(--mono); font-size: 14px; flex: 0 0 auto;
-      transition: all .2s;
+      transition: background .2s, color .2s;
     }
     .spoiler[open] summary::before { content: "–"; background: var(--accent); color: var(--bg); }
     .spoiler summary .rec-dot {
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--alert);
-      animation: blink 2s ease-in-out infinite;
-      flex: 0 0 auto; box-shadow: 0 0 8px var(--alert);
+      animation: pulse 2s ease-in-out infinite;
+      flex: 0 0 auto;
+      will-change: opacity, transform;
     }
     .spoiler summary .tag-end {
       margin-left: auto; color: var(--ink-faint); font-size: 9px;
@@ -575,7 +580,7 @@
     }
 
     /* =========================================================
-       БОКОВАЯ ПАНЕЛЬ DOSSIER
+       БОКОВАЯ ПАНЕЛЬ DOSSIER — без backdrop-filter
        ========================================================= */
     .dossier-aside {
       position: sticky; top: 100px;
@@ -584,8 +589,7 @@
     }
     .dossier-card {
       border: 1px solid var(--line-mid);
-      background: rgba(14,14,14,.75);
-      backdrop-filter: blur(6px);
+      background: rgba(14,14,14,.92);
       padding: 18px;
       position: relative;
     }
@@ -643,7 +647,6 @@
       text-align: right; letter-spacing: .03em;
     }
 
-    /* Статус-бар — читаемый шрифт Inter 600 */
     .dossier-status {
       display: flex; align-items: center; gap: 10px;
       font-family: var(--sans);
@@ -658,23 +661,25 @@
     }
     .dossier-status .dot {
       width: 7px; height: 7px; background: var(--bg);
-      border-radius: 50%; animation: blink 2s ease-in-out infinite;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+      will-change: opacity, transform;
     }
 
     /* =========================================================
-       ПСИХОПРОФИЛЬ
+       ПСИХОПРОФИЛЬ — без backdrop-filter, content-visibility
        ========================================================= */
     .psych-section {
       padding: 96px 0;
       border-bottom: 1px solid var(--line);
       position: relative;
       background: rgba(10,10,10,.4);
-      backdrop-filter: blur(2px);
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 1000px;
     }
     .psych-card {
       border: 1px solid var(--line-mid);
-      background: rgba(5,5,5,.6);
-      backdrop-filter: blur(6px);
+      background: rgba(5,5,5,.85);
       position: relative;
     }
     .psych-card::before {
@@ -696,13 +701,15 @@
       display: inline-flex; align-items: center; justify-content: center;
       border: 1px solid var(--accent); color: var(--accent);
       font-family: var(--mono); font-size: 14px; flex: 0 0 auto;
-      transition: all .2s;
+      transition: background .2s, color .2s;
     }
     .psych-card[open] > summary::before { content: "–"; background: var(--accent); color: var(--bg); }
     .psych-card > summary .rec-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--ink); animation: blink 2s ease-in-out infinite;
+      background: var(--ink);
+      animation: pulse 2s ease-in-out infinite;
       flex: 0 0 auto;
+      will-change: opacity, transform;
     }
     .psych-card > summary .psych-card__hint {
       margin-left: auto; font-size: 9px;
@@ -759,7 +766,7 @@
       padding: 6px 12px;
       border: 1px solid var(--line-strong);
       color: var(--ink-mid);
-      transition: all .2s;
+      transition: color .2s, background .2s, border-color .2s;
     }
     .psych-tags span:hover { color: var(--bg); background: var(--ink); border-color: var(--ink); }
     .psych-tags--strong span { color: var(--ink); border-color: var(--ink); }
@@ -833,7 +840,8 @@
       color: var(--ink-dim); background: transparent;
       border: 1px solid var(--line-strong);
       padding: 8px 14px; cursor: pointer;
-      transition: all .2s; font-weight: 500;
+      transition: color .2s, background .2s, border-color .2s;
+      font-weight: 500;
     }
     .entry-tab:hover { color: var(--ink); border-color: var(--ink); }
     .entry-tab.is-active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
@@ -974,7 +982,6 @@
       text-align: right;
     }
 
-    /* Читаемые теги: Inter 600 + больший размер */
     .entry-tag {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: var(--sans);
@@ -991,7 +998,6 @@
     .entry-tag--req   { color: var(--ink-mid); }
     .entry-tag--train { color: var(--ink-mid); border-style: dashed; }
 
-    /* Читаемые статусы: Inter 600 */
     .entry__status {
       font-family: var(--sans);
       font-size: 12px;
@@ -1022,19 +1028,18 @@
       font-size: 10px; letter-spacing: .2em;
       text-transform: uppercase;
       border-bottom: 1px solid var(--accent);
-      padding-bottom: 1px; transition: all .2s; font-weight: 500;
+      padding-bottom: 1px; transition: color .2s, border-color .2s; font-weight: 500;
       display: inline-block;
       margin-top: 6px;
     }
     .entry__body a:hover { color: var(--ink); border-color: var(--ink); }
 
     /* =========================================================
-       ФИНАЛ
+       ФИНАЛ — без backdrop-filter
        ========================================================= */
     .final-cta {
       position: relative;
-      background: rgba(10,10,10,.6);
-      backdrop-filter: blur(4px);
+      background: rgba(10,10,10,.85);
       border-bottom: 1px solid var(--line-mid);
       overflow: hidden;
     }
@@ -1190,6 +1195,15 @@
       .metric { grid-template-columns: 100px 1fr 34px; font-size: 9px; }
     }
 
+    /* Отключаем тяжёлые анимации при prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
     @media print {
       body::before, .read-progress, .to-top, .nav-toggle,
       .bg-layer, .bg-rails, .bg-horizontals, .bg-panels,
@@ -1209,6 +1223,7 @@
 
   <script defer>
     document.addEventListener('DOMContentLoaded', function () {
+      /* --- Мобильное меню --- */
       var toggle = document.querySelector('.nav-toggle');
       var nav = document.getElementById('site-nav');
       if (toggle && nav) {
@@ -1224,30 +1239,46 @@
         });
       }
 
+      /* --- Прогресс чтения (rAF-троттлинг) --- */
       var progressBar = document.querySelector('.read-progress span');
       if (progressBar) {
+        var ticking = false;
         var updateProgress = function () {
           var h = document.documentElement;
           var max = h.scrollHeight - h.clientHeight;
           var p = max > 0 ? h.scrollTop / max : 0;
           progressBar.style.width = (p * 100) + '%';
+          ticking = false;
         };
-        window.addEventListener('scroll', updateProgress, { passive: true });
-        window.addEventListener('resize', updateProgress);
+        window.addEventListener('scroll', function () {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(updateProgress);
+          }
+        }, { passive: true });
+        window.addEventListener('resize', updateProgress, { passive: true });
         updateProgress();
       }
 
+      /* --- Кнопка «наверх» --- */
       var toTop = document.querySelector('.to-top');
       if (toTop) {
+        var ttTicking = false;
         window.addEventListener('scroll', function () {
-          if (window.scrollY > 600) toTop.classList.add('is-visible');
-          else toTop.classList.remove('is-visible');
+          if (ttTicking) return;
+          ttTicking = true;
+          requestAnimationFrame(function () {
+            if (window.scrollY > 600) toTop.classList.add('is-visible');
+            else toTop.classList.remove('is-visible');
+            ttTicking = false;
+          });
         }, { passive: true });
         toTop.addEventListener('click', function () {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
       }
 
+      /* --- Активная ссылка в навигации --- */
       var navLinks = document.querySelectorAll('.site-nav a[href^="#"]');
       var sections = [];
       navLinks.forEach(function (link) {
@@ -1271,6 +1302,22 @@
         sections.forEach(function (s) { observer.observe(s.el); });
       }
 
+      /* --- Остановка анимации точек вне вьюпорта --- */
+      var animatedDots = document.querySelectorAll('.dot, .rec-dot');
+      if ('IntersectionObserver' in window && animatedDots.length) {
+        var dotObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.style.animationPlayState = 'running';
+            } else {
+              entry.target.style.animationPlayState = 'paused';
+            }
+          });
+        }, { rootMargin: '100px' });
+        animatedDots.forEach(function (dot) { dotObserver.observe(dot); });
+      }
+
+      /* --- Фоновая музыка --- */
       var bgMusic = document.getElementById('bg-music');
       var musicStarted = false;
       if (bgMusic) {
@@ -1289,11 +1336,11 @@
           document.removeEventListener('touchstart', startBgMusic);
           document.removeEventListener('mousemove', startBgMusic);
         }
-        document.addEventListener('click', startBgMusic);
-        document.addEventListener('keydown', startBgMusic);
-        document.addEventListener('scroll', startBgMusic);
-        document.addEventListener('touchstart', startBgMusic);
-        document.addEventListener('mousemove', startBgMusic);
+        document.addEventListener('click', startBgMusic, { passive: true });
+        document.addEventListener('keydown', startBgMusic, { passive: true });
+        document.addEventListener('scroll', startBgMusic, { passive: true });
+        document.addEventListener('touchstart', startBgMusic, { passive: true });
+        document.addEventListener('mousemove', startBgMusic, { passive: true });
       }
     });
   </script>
@@ -1361,7 +1408,7 @@
   </header>
 
   <main id="main">
-    <!-- HERO — без паспорта -->
+    <!-- HERO -->
     <section class="hero">
       <img class="hero-image" src="hero.png" alt="" fetchpriority="high" decoding="async">
 
@@ -1441,7 +1488,7 @@
               </p>
               <div class="dossier-photo">
                 <span class="dossier-photo__tag">CLASSIFIED</span>
-                <img class="dossier-photo__img" src="avatar.jpg" alt="Фото оперативника «Аркейн»">
+                <img class="dossier-photo__img" src="avatar.jpg" alt="Фото оперативника «Аркейн»" loading="lazy" decoding="async">
               </div>
               <dl style="margin:0;">
                 <div class="dossier-row"><dt>Статус</dt><dd>Активен</dd></div>
@@ -1483,6 +1530,7 @@
           </div>
         </div>
 
+        <!-- Открыт по умолчанию — но внутри нет тяжёлых blur/box-shadow -->
         <details class="psych-card" open>
           <summary>
             <span class="rec-dot" aria-hidden="true"></span>
@@ -1536,7 +1584,7 @@
       </div>
     </section>
 
-    <!-- ХРОНОЛОГИЯ — без дублирующих заголовков -->
+    <!-- ХРОНОЛОГИЯ -->
     <section class="section chronicle" id="chronicle">
       <div class="shell">
         <div class="section-heading">
